@@ -3,9 +3,14 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'junegunn/goyo.vim'
 
   Plug 'yuttie/comfortable-motion.vim'
+  Plug 'ramitos/jsctags'
+  Plug 'w0rp/ale'
 
   " Syntax highlighting
   Plug 'pangloss/vim-javascript'
+  Plug 'elzr/vim-json'
+  Plug 'heavenshell/vim-jsdoc'
+  Plug 'moll/vim-node'
   Plug 'mxw/vim-jsx'
 call plug#end()
 
@@ -76,3 +81,4 @@ nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
 
 nnoremap <silent> <C-f> :call comfortable_motion#flick(200)<CR>
 nnoremap <silent> <C-b> :call comfortable_motion#flick(-200)<CR>
+
