@@ -6,6 +6,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ramitos/jsctags'
   Plug 'w0rp/ale'
 
+  " Fuzzy file find
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
   " Syntax highlighting
   Plug 'pangloss/vim-javascript'
   Plug 'elzr/vim-json'
