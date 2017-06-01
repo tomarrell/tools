@@ -6,8 +6,12 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'ramitos/jsctags'
   Plug 'w0rp/ale'
 
+  " NerdTree vim tabs
+  Plug 'jistr/vim-nerdtree-tabs'
+
   " Fuzzy file find
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+  Plug 'junegunn/fzf.vim'
 
   " Syntax highlighting
   Plug 'pangloss/vim-javascript'
@@ -84,4 +88,7 @@ nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
 
 nnoremap <silent> <C-f> :call comfortable_motion#flick(200)<CR>
 nnoremap <silent> <C-b> :call comfortable_motion#flick(-200)<CR>
+
+" Prevent vim-nerdtree-tabs from autoclosing vim when NERDTree is last buffer
+let g:nerdtree_tabs_autoclose=0
 
