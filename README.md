@@ -1,4 +1,4 @@
-# Toosl
+# Tools
 Personal tooling configuration
 
 Currently populated with:
