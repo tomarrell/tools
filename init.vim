@@ -9,6 +9,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   " NerdTree vim tabs
   Plug 'jistr/vim-nerdtree-tabs'
 
+  " Nerd commenter
+  Plug 'scrooloose/nerdcommenter'
+
   " Fuzzy file find
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
@@ -82,6 +85,12 @@ set ai " Auto indent
 set si " Smart indent
 set wrap " Wrap lines
 
+" NERD Commenter
+" Enable filetype plugins
+filetype plugin on
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
 " Setup smooth scroll
 nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<CR>
 nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
@@ -91,4 +100,7 @@ nnoremap <silent> <C-b> :call comfortable_motion#flick(-200)<CR>
 
 " Prevent vim-nerdtree-tabs from autoclosing vim when NERDTree is last buffer
 let g:nerdtree_tabs_autoclose=0
+
+" Allow JSX syntax highlighting in files without .jsx extension i.e. .js files
+let g:jsx_ext_required = 0
 
