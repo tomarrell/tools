@@ -1,2 +1,5 @@
-# tools
+# Tools
 Personal tooling configuration
+
+Currently populated with:
+- NeoVim configuration + plugins
