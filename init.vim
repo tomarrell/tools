@@ -9,6 +9,16 @@ call plug#begin('~/.local/share/nvim/plugged')
   " NerdTree vim tabs
   Plug 'jistr/vim-nerdtree-tabs'
 
+  " Vim Airline status-bar
+  Plug 'bling/vim-airline'
+
+  " Easy modification of bracket pairs
+  " read :help surround for detailed information
+  Plug 'tpope/vim-surround'
+
+  " The best Git wrapper of all time
+  Plug 'tpope/vim-fugitive'
+
   " Nerd commenter
   Plug 'scrooloose/nerdcommenter'
 
@@ -52,7 +62,7 @@ set wildmenu
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases 
+" When searching try to be smart about cases
 set smartcase
 
 " Prevents highlight of text when searching
