@@ -43,6 +43,9 @@ set number
 " Sets how many lines of history VIM has to remember
 set history=500
 
+" Make a copy of the file and overwrite the original one. This prevents file watchers from missing the file updated and not triggering a reload. I'm looking at you Webpack...
+set backupcopy=yes
+
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=10
 
