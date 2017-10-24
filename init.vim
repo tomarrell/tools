@@ -26,12 +26,14 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
 
-  " Syntax highlighting
+  " Javascript + syntax highlighting
   Plug 'pangloss/vim-javascript'
-  Plug 'elzr/vim-json'
   Plug 'heavenshell/vim-jsdoc'
+  Plug 'elzr/vim-json'
   Plug 'moll/vim-node'
   Plug 'mxw/vim-jsx'
+
+  " Go
   Plug 'fatih/vim-go'
 call plug#end()
 
@@ -117,4 +119,7 @@ let g:nerdtree_tabs_autoclose=0
 
 " Allow JSX syntax highlighting in files without .jsx extension i.e. .js files
 let g:jsx_ext_required = 0
+
+" Setup easy cd command to current file directory
+nnoremap ,cd :cd %:p:h<CR>
 
