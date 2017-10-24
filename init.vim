@@ -32,6 +32,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'heavenshell/vim-jsdoc'
   Plug 'moll/vim-node'
   Plug 'mxw/vim-jsx'
+  Plug 'fatih/vim-go'
 call plug#end()
 
 " Opens NERDTree automatically on startup
