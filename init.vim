@@ -5,6 +5,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'yuttie/comfortable-motion.vim'
   Plug 'ramitos/jsctags'
   Plug 'w0rp/ale'
+  
+  " Solarized Color Scheme
+  Plug 'iCyMind/NeoSolarized'
 
   " NerdTree vim tabs
   Plug 'jistr/vim-nerdtree-tabs'
@@ -36,6 +39,12 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Go
   Plug 'fatih/vim-go'
 call plug#end()
+
+
+" Solarized color scheme setup
+colorscheme NeoSolarized
+let g:neosolarized_contrast = "high"
+set background=dark
 
 " Opens NERDTree automatically on startup
 autocmd VimEnter * NERDTree
