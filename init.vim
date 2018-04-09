@@ -5,7 +5,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'yuttie/comfortable-motion.vim'
   Plug 'ramitos/jsctags'
   Plug 'w0rp/ale'
-  
+
   " Solarized Color Scheme
   Plug 'iCyMind/NeoSolarized'
 
@@ -35,6 +35,8 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'elzr/vim-json'
   Plug 'moll/vim-node'
   Plug 'mxw/vim-jsx'
+  " Javascript smart gf
+  Plug 'tomarrell/vim-npr'
 
   " Go
   Plug 'fatih/vim-go'
