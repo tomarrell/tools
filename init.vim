@@ -33,8 +33,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'pangloss/vim-javascript'
   Plug 'heavenshell/vim-jsdoc'
   Plug 'elzr/vim-json'
-  " Get out of here with that includeexpr override... temporarily
-  " Plug 'moll/vim-node'
+  Plug 'moll/vim-node'
   Plug 'mxw/vim-jsx'
   " Javascript smart gf
   Plug 'tomarrell/vim-npr'
