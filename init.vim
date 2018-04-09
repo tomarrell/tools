@@ -133,3 +133,6 @@ let g:jsx_ext_required = 0
 
 " Setup easy cd command to current file directory
 nnoremap ,cd :cd %:p:h<CR>
+
+" NerdTree mapping
+nnoremap <C-n> :NERDTreeToggle<CR>
