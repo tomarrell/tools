@@ -136,3 +136,6 @@ nnoremap ,cd :cd %:p:h<CR>
 
 " NerdTree mapping
 nnoremap <C-n> :NERDTreeToggle<CR>
+
+" Check includeexpr
+nnoremap 11 :set includeexpr?<CR>
