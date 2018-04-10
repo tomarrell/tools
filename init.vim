@@ -134,8 +134,14 @@ let g:jsx_ext_required = 0
 " Setup easy cd command to current file directory
 nnoremap ,cd :cd %:p:h<CR>
 
-" NerdTree mapping
-nnoremap <C-n> :NERDTreeToggle<CR>
+" NerdTree mappings
+nnoremap <C-n><C-n> :NERDTree<CR>
+nnoremap <C-n><C-t> :NERDTreeToggle<CR>
 
 " Check includeexpr
 nnoremap 11 :set includeexpr?<CR>
+
+" Vertical resize mappings
+nnoremap - :vert res -10<CR>
+nnoremap + :vert res +10<CR>
+
