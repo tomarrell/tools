@@ -2,9 +2,12 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'scrooloose/nerdtree'
   Plug 'junegunn/goyo.vim'
 
-  Plug 'yuttie/comfortable-motion.vim'
+  " Plug 'yuttie/comfortable-motion.vim'
   Plug 'ramitos/jsctags'
   Plug 'w0rp/ale'
+
+  " Magit inside Vim
+  Plug 'jreybert/vimagit'
 
   " Solarized Color Scheme
   Plug 'iCyMind/NeoSolarized'
@@ -41,7 +44,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Go
   Plug 'fatih/vim-go'
 call plug#end()
-
 
 " Solarized color scheme setup
 colorscheme NeoSolarized
@@ -95,6 +97,9 @@ set foldcolumn=1
 " Enable syntax highlighting
 syntax enable
 
+" Enable flow syntax highlighting
+let g:javascript_plugin_flow = 1
+
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 
@@ -118,12 +123,12 @@ filetype plugin on
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
 
-" Setup smooth scroll
-nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<CR>
-nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
+" " Setup smooth scroll
+" nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<CR>
+" nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
 
-nnoremap <silent> <C-f> :call comfortable_motion#flick(200)<CR>
-nnoremap <silent> <C-b> :call comfortable_motion#flick(-200)<CR>
+" nnoremap <silent> <C-f> :call comfortable_motion#flick(200)<CR>
+" nnoremap <silent> <C-b> :call comfortable_motion#flick(-200)<CR>
 
 " Prevent vim-nerdtree-tabs from autoclosing vim when NERDTree is last buffer
 let g:nerdtree_tabs_autoclose=0
@@ -137,11 +142,20 @@ nnoremap ,cd :cd %:p:h<CR>
 " NerdTree mappings
 nnoremap <C-n><C-n> :NERDTree<CR>
 nnoremap <C-n><C-t> :NERDTreeToggle<CR>
+nnoremap <SPACE>nn :NERDTree<CR>
+nnoremap <SPACE>nt :NERDTreeToggle<CR>
 
 " Check includeexpr
 nnoremap 11 :set includeexpr?<CR>
 
 " Vertical resize mappings
 nnoremap - :vert res -10<CR>
+nnoremap _ :vert res -10<CR>
 nnoremap + :vert res +10<CR>
+
+" FZF Quick bind
+nnoremap <SPACE>pf :FZF<CR>
+
+" Ag Quick bind
+nnoremap <SPACE>sp :Ag<CR>
 
