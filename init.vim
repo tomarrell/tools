@@ -145,6 +145,11 @@ nnoremap <C-n><C-t> :NERDTreeToggle<CR>
 nnoremap <SPACE>nn :NERDTree<CR>
 nnoremap <SPACE>nt :NERDTreeToggle<CR>
 
+" Git mappings
+nnoremap <SPACE>gs :Gstatus<CR>
+nnoremap <SPACE>ga :Gwrite<CR>
+nnoremap <SPACE>gp :Gpush<CR>
+
 " Check includeexpr
 nnoremap 11 :set includeexpr?<CR>
 
