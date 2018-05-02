@@ -159,3 +159,10 @@ nnoremap <SPACE>pf :FZF<CR>
 " Ag Quick bind
 nnoremap <SPACE>sp :Ag<CR>
 
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
+
+nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
