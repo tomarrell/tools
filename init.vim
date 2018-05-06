@@ -9,8 +9,11 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Magit inside Vim
   Plug 'jreybert/vimagit'
 
+  "" Color Schemes
   " Solarized Color Scheme
   Plug 'iCyMind/NeoSolarized'
+  " Lots of colors
+  Plug 'rafi/awesome-vim-colorschemes'
 
   " NerdTree vim tabs
   Plug 'jistr/vim-nerdtree-tabs'
@@ -45,10 +48,8 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'fatih/vim-go'
 call plug#end()
 
-" Solarized color scheme setup
-colorscheme NeoSolarized
-let g:neosolarized_contrast = "high"
-set background=dark
+" Options available: rafi/awesome-vim-colorschemes
+colorscheme archery
 
 " Opens NERDTree automatically on startup
 autocmd VimEnter * NERDTree
@@ -144,6 +145,7 @@ nnoremap <C-n><C-n> :NERDTree<CR>
 nnoremap <C-n><C-t> :NERDTreeToggle<CR>
 nnoremap <SPACE>nn :NERDTree<CR>
 nnoremap <SPACE>nt :NERDTreeToggle<CR>
+nnoremap <SPACE>nf :NERDTreeFind<CR>
 
 " Git mappings
 nnoremap <SPACE>gs :Gstatus<CR>
