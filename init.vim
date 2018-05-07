@@ -174,6 +174,9 @@ nnoremap <SPACE>gp :AsyncRun git push<CR>
 " Check includeexpr
 nnoremap 11 :set includeexpr?<CR>
 
+" Quit buffer
+nnoremap <SPACE>qq :q<CR>
+
 " Async run command under cursor
 nnoremap <SPACE>r :.AsyncRun zsh<CR>
 
