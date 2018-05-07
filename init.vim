@@ -1,9 +1,25 @@
 call plug#begin('~/.local/share/nvim/plugged')
+  " Look into https://vimawesome.com/plugin/vim-polyglot
+
+  " Async command runner
+  " Look at https://github.com/skywind3000/asyncrun.vim
+  Plug 'skywind3000/asyncrun.vim'
+
+  " File explorer sidebar
   Plug 'scrooloose/nerdtree'
+
+  " 'Distraction free editing'
   Plug 'junegunn/goyo.vim'
 
   " Plug 'yuttie/comfortable-motion.vim'
+
+  " Javascript tags
   Plug 'ramitos/jsctags'
+
+  " Vim REST client
+  Plug 'diepm/vim-rest-console'
+
+  " Asynchronous linting
   Plug 'w0rp/ale'
 
   " Magit inside Vim
@@ -53,6 +69,9 @@ colorscheme archery
 
 " Opens NERDTree automatically on startup
 autocmd VimEnter * NERDTree
+
+" Set AsyncRun to open QuickFix buffer
+let g:asyncrun_open = 8
 
 " Sets line numbers at the beginning of each line
 set number
@@ -150,10 +169,19 @@ nnoremap <SPACE>nf :NERDTreeFind<CR>
 " Git mappings
 nnoremap <SPACE>gs :Gstatus<CR>
 nnoremap <SPACE>ga :Gwrite<CR>
-nnoremap <SPACE>gp :Gpush<CR>
+nnoremap <SPACE>gp :AsyncRun git push<CR>
 
 " Check includeexpr
 nnoremap 11 :set includeexpr?<CR>
+
+" Async run command under cursor
+nnoremap <SPACE>r :.AsyncRun zsh<CR>
+
+" Close quickfix and preview windows
+nnoremap <SPACE>cc :ccl<CR>:cp<CR>
+
+" Rest client
+map <SPACE>jj <C-j>
 
 " Vertical resize mappings
 nnoremap - :vert res -10<CR>
