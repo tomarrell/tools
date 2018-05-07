@@ -178,7 +178,7 @@ nnoremap 11 :set includeexpr?<CR>
 nnoremap <SPACE>r :.AsyncRun zsh<CR>
 
 " Close quickfix and preview windows
-nnoremap <SPACE>cc :ccl<CR>:cp<CR>
+nnoremap <SPACE>cc :ccl<CR>:pc<CR>
 
 " Rest client
 map <SPACE>jj <C-j>
