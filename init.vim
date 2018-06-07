@@ -104,6 +104,9 @@ set ignorecase
 " When searching try to be smart about cases
 set smartcase
 
+" Prevent text wrapping by default... It's annoying
+set nowrap
+
 " Prevents highlight of text when searching
 set nohlsearch
 
@@ -170,6 +173,7 @@ nnoremap <SPACE>nf :NERDTreeFind<CR>
 nnoremap <SPACE>gs :Gstatus<CR>
 nnoremap <SPACE>ga :Gwrite<CR>
 nnoremap <SPACE>gp :AsyncRun git push<CR>
+nnoremap <SPACE>gl :AsyncRun git pull<CR>
 
 " Check includeexpr
 nnoremap 11 :set includeexpr?<CR>
@@ -197,6 +201,9 @@ nnoremap <SPACE>pf :FZF<CR>
 " Ag Quick bind
 nnoremap <SPACE>sp :Ag<CR>
 
+" Format JSON quickbind
+nnoremap <SPACE>fj :%!python -m json.tool<CR>
+
 func! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
@@ -204,3 +211,28 @@ func! DeleteTrailingWS()
 endfunc
 
 nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
+
+" Highlight all instances of word under cursor, when idle.
+" Useful when studying strange source code.
+" Type z/ to toggle highlighting on/off.
+nnoremap z/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
+function! AutoHighlightToggle()
+  let @/ = ''
+  if exists('#auto_highlight')
+    au! auto_highlight
+    augroup! auto_highlight
+    setl updatetime=200
+    echo 'Highlight current word: off'
+    return 0
+  else
+    augroup auto_highlight
+      au!
+      au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
+    augroup end
+    setl updatetime=200
+    echo 'Highlight current word: ON'
+    return 1
+  endif
+endfunction
+
+call AutoHighlightToggle()
