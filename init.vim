@@ -62,6 +62,12 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " Go
   Plug 'fatih/vim-go'
+
+  " Rust
+  Plug 'rust-lang/rust.vim'
+  Plug 'timonv/vim-cargo'
+  Plug 'racer-rust/vim-racer'
+
 call plug#end()
 
 " Options available: rafi/awesome-vim-colorschemes
@@ -168,6 +174,7 @@ nnoremap <C-n><C-t> :NERDTreeToggle<CR>
 nnoremap <SPACE>nn :NERDTree<CR>
 nnoremap <SPACE>nt :NERDTreeToggle<CR>
 nnoremap <SPACE>nf :NERDTreeFind<CR>
+nnoremap <SPACE>cd :execute 'cd %:p:h'<CR>
 
 " Git mappings
 nnoremap <SPACE>gs :Gstatus<CR>
@@ -188,7 +195,7 @@ nnoremap <SPACE>r :.AsyncRun zsh<CR>
 nnoremap <SPACE>cc :ccl<CR>:pc<CR>
 
 " Rest client
-map <SPACE>jj <C-j>
+map <SPACE>jj :call VrcQuery()<CR>
 
 " Vertical resize mappings
 nnoremap - :vert res -10<CR>
@@ -203,6 +210,9 @@ nnoremap <SPACE>sp :Ag<CR>
 
 " Format JSON quickbind
 nnoremap <SPACE>fj :%!python -m json.tool<CR>
+
+" Format Rust
+nnoremap <SPACE>rf :%!rustfmt<CR>
 
 func! DeleteTrailingWS()
   exe "normal mz"
@@ -221,7 +231,7 @@ function! AutoHighlightToggle()
   if exists('#auto_highlight')
     au! auto_highlight
     augroup! auto_highlight
-    setl updatetime=200
+    setl updatetime=400
     echo 'Highlight current word: off'
     return 0
   else
