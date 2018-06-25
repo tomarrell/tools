@@ -189,7 +189,7 @@ nnoremap 11 :set includeexpr?<CR>
 nnoremap <SPACE>qq :q<CR>
 
 " Async run command under cursor
-nnoremap <SPACE>r :.AsyncRun zsh<CR>
+nnoremap <SPACE>rr :.AsyncRun zsh<CR>
 
 " Close quickfix and preview windows
 nnoremap <SPACE>cc :ccl<CR>:pc<CR>
