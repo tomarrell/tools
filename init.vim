@@ -189,7 +189,7 @@ nnoremap 11 :set includeexpr?<CR>
 nnoremap <SPACE>qq :q<CR>
 
 " Async run command under cursor
-nnoremap <SPACE>rr :.AsyncRun zsh<CR>
+nnoremap <SPACE>br :.AsyncRun zsh<CR>
 
 " Close quickfix and preview windows
 nnoremap <SPACE>cc :ccl<CR>:pc<CR>
@@ -211,8 +211,9 @@ nnoremap <SPACE>sp :Ag<CR>
 " Format JSON quickbind
 nnoremap <SPACE>fj :%!python -m json.tool<CR>
 
-" Format Rust
+" Rust Bindings
 nnoremap <SPACE>rf :%!rustfmt<CR>
+nnoremap <SPACE>rr :CargoRun<CR>
 
 func! DeleteTrailingWS()
   exe "normal mz"
