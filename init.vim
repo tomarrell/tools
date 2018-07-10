@@ -68,6 +68,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'timonv/vim-cargo'
   Plug 'racer-rust/vim-racer'
 
+  " Automcomplete
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
 call plug#end()
 
 " Options available: rafi/awesome-vim-colorschemes
@@ -215,6 +218,10 @@ nnoremap <SPACE>fj :%!python -m json.tool<CR>
 nnoremap <SPACE>rf :%!rustfmt<CR>
 nnoremap <SPACE>rr :CargoRun<CR>
 
+" Autocomplete, deoplete
+let g:deoplete#enable_at_startup = 1
+
+" Delete whitespace
 func! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
@@ -222,28 +229,3 @@ func! DeleteTrailingWS()
 endfunc
 
 nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
-
-" Highlight all instances of word under cursor, when idle.
-" Useful when studying strange source code.
-" Type z/ to toggle highlighting on/off.
-nnoremap z/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
-function! AutoHighlightToggle()
-  let @/ = ''
-  if exists('#auto_highlight')
-    au! auto_highlight
-    augroup! auto_highlight
-    setl updatetime=400
-    echo 'Highlight current word: off'
-    return 0
-  else
-    augroup auto_highlight
-      au!
-      au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
-    augroup end
-    setl updatetime=200
-    echo 'Highlight current word: ON'
-    return 1
-  endif
-endfunction
-
-call AutoHighlightToggle()
