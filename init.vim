@@ -32,7 +32,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'rafi/awesome-vim-colorschemes'
 
   " NerdTree vim tabs
-  Plug 'jistr/vim-nerdtree-tabs'
+  " Plug 'jistr/vim-nerdtree-tabs'
 
   " Vim Airline status-bar
   Plug 'bling/vim-airline'
@@ -114,7 +114,7 @@ set ignorecase
 set smartcase
 
 " Prevent text wrapping by default... It's annoying
-set nowrap
+autocmd BufEnter set nowrap
 
 " Prevents highlight of text when searching
 set nohlsearch
