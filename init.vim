@@ -57,6 +57,10 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'elzr/vim-json'
   Plug 'moll/vim-node'
   Plug 'mxw/vim-jsx'
+  Plug 'flowtype/vim-flow', {
+        \ 'autoload': {
+        \     'filetypes': 'javascript'
+        \ }}
   " Javascript smart gf
   Plug 'tomarrell/vim-npr'
 
@@ -70,7 +74,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " Automcomplete
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
 call plug#end()
 
 " Options available: rafi/awesome-vim-colorschemes
@@ -114,7 +117,7 @@ set ignorecase
 set smartcase
 
 " Prevent text wrapping by default... It's annoying
-autocmd BufEnter set nowrap
+set nowrap
 
 " Prevents highlight of text when searching
 set nohlsearch
@@ -147,7 +150,6 @@ set tabstop=2
 
 set ai " Auto indent
 set si " Smart indent
-set wrap " Wrap lines
 
 " NERD Commenter
 " Enable filetype plugins
@@ -170,6 +172,10 @@ let g:jsx_ext_required = 0
 
 " Setup easy cd command to current file directory
 nnoremap ,cd :cd %:p:h<CR>
+
+" ||======================||
+" || Emacs Style Bindings ||
+" ||======================||
 
 " NerdTree mappings
 nnoremap <C-n><C-n> :NERDTree<CR>
@@ -200,11 +206,6 @@ nnoremap <SPACE>cc :ccl<CR>:pc<CR>
 " Rest client
 map <SPACE>jj :call VrcQuery()<CR>
 
-" Vertical resize mappings
-nnoremap - :vert res -10<CR>
-nnoremap _ :vert res -10<CR>
-nnoremap + :vert res +10<CR>
-
 " FZF Quick bind
 nnoremap <SPACE>pf :FZF<CR>
 
@@ -218,8 +219,24 @@ nnoremap <SPACE>fj :%!python -m json.tool<CR>
 nnoremap <SPACE>rf :%!rustfmt<CR>
 nnoremap <SPACE>rr :CargoRun<CR>
 
+" Flow goto definition
+nnoremap <SPACE>fd :FlowJumpToDef<CR>
+
+" ||====================||
+" || End Emacs bindings ||
+" ||====================||
+
+" Vertical resize mappings
+nnoremap - :vert res -10<CR>
+nnoremap _ :vert res -10<CR>
+nnoremap + :vert res +10<CR>
+
 " Autocomplete, deoplete
 let g:deoplete#enable_at_startup = 1
+
+" Flow error checking
+let g:flow#autoclose = 1
+let g:flow#showquickfix = 0
 
 " Delete whitespace
 func! DeleteTrailingWS()
