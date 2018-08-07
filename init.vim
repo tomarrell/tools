@@ -77,7 +77,12 @@ call plug#begin('~/.local/share/nvim/plugged')
 call plug#end()
 
 " Options available: rafi/awesome-vim-colorschemes
-colorscheme archery
+" Old theme: archery
+set background=dark
+let g:two_firewatch_italics=1
+colorscheme two-firewatch
+
+let g:airline_theme = 'twofirewatch'
 
 " Opens NERDTree automatically on startup
 autocmd VimEnter * NERDTree
