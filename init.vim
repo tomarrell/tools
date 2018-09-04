@@ -1,6 +1,10 @@
 call plug#begin('~/.local/share/nvim/plugged')
   " Look into https://vimawesome.com/plugin/vim-polyglot
 
+  " Vim Airline status-bar
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+
   " Async command runner
   " Look at https://github.com/skywind3000/asyncrun.vim
   Plug 'skywind3000/asyncrun.vim'
@@ -34,9 +38,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   " NerdTree vim tabs
   " Plug 'jistr/vim-nerdtree-tabs'
 
-  " Vim Airline status-bar
-  Plug 'bling/vim-airline'
-
   " Easy modification of bracket pairs
   " read :help surround for detailed information
   Plug 'tpope/vim-surround'
@@ -57,10 +58,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'elzr/vim-json'
   Plug 'moll/vim-node'
   Plug 'mxw/vim-jsx'
-  Plug 'flowtype/vim-flow', {
-        \ 'autoload': {
-        \     'filetypes': 'javascript'
-        \ }}
   " Javascript smart gf
   Plug 'tomarrell/vim-npr'
 
@@ -79,10 +76,10 @@ call plug#end()
 " Options available: rafi/awesome-vim-colorschemes
 " Old theme: archery
 set background=dark
+let g:airline_theme = 'alduin'
 let g:two_firewatch_italics=1
 colorscheme two-firewatch
 
-let g:airline_theme = 'twofirewatch'
 
 " Opens NERDTree automatically on startup
 autocmd VimEnter * NERDTree
@@ -213,6 +210,8 @@ map <SPACE>jj :call VrcQuery()<CR>
 
 " FZF Quick bind
 nnoremap <SPACE>pf :FZF<CR>
+" Print current file path
+nnoremap <SPACE>pd :echo @%<CR>
 
 " Ag Quick bind
 nnoremap <SPACE>sp :Ag<CR>
@@ -223,9 +222,6 @@ nnoremap <SPACE>fj :%!python -m json.tool<CR>
 " Rust Bindings
 nnoremap <SPACE>rf :%!rustfmt<CR>
 nnoremap <SPACE>rr :CargoRun<CR>
-
-" Flow goto definition
-nnoremap <SPACE>fd :FlowJumpToDef<CR>
 
 " ||====================||
 " || End Emacs bindings ||
@@ -238,10 +234,6 @@ nnoremap + :vert res +10<CR>
 
 " Autocomplete, deoplete
 let g:deoplete#enable_at_startup = 1
-
-" Flow error checking
-let g:flow#autoclose = 1
-let g:flow#showquickfix = 0
 
 " Delete whitespace
 func! DeleteTrailingWS()
