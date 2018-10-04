@@ -5,6 +5,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
 
+  " Vim incsearch
+  Plug 'haya14busa/is.vim'
+
   " Async command runner
   " Look at https://github.com/skywind3000/asyncrun.vim
   Plug 'skywind3000/asyncrun.vim'
@@ -27,7 +30,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'w0rp/ale'
 
   " Magit inside Vim
-  Plug 'jreybert/vimagit'
+  Plug 'jreybert/vimagit', { 'branch': 'next' }
 
   "" Color Schemes
   " Solarized Color Scheme
@@ -80,7 +83,6 @@ let g:airline_theme = 'alduin'
 let g:two_firewatch_italics=1
 colorscheme two-firewatch
 
-
 " Opens NERDTree automatically on startup
 autocmd VimEnter * NERDTree
 
@@ -121,8 +123,8 @@ set smartcase
 " Prevent text wrapping by default... It's annoying
 set nowrap
 
-" Prevents highlight of text when searching
-set nohlsearch
+" Set highlight for searching
+set hlsearch
 
 " No annoying sound on errors
 set noerrorbells
@@ -174,6 +176,9 @@ let g:jsx_ext_required = 0
 
 " Setup easy cd command to current file directory
 nnoremap ,cd :cd %:p:h<CR>
+
+" Tidy HTML Command
+:command! Thtml :%!tidy -q -mi -wrap 0 --show-errors 0
 
 " ||======================||
 " || Emacs Style Bindings ||
