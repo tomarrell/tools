@@ -70,7 +70,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Rust
   Plug 'rust-lang/rust.vim'
   Plug 'timonv/vim-cargo'
-  Plug 'racer-rust/vim-racer'
+  " Plug 'racer-rust/vim-racer'
 
   " Automcomplete
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -248,3 +248,15 @@ func! DeleteTrailingWS()
 endfunc
 
 nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
+
+" Ale Linting and Language Server configuration
+let g:ale_linters = {'rust': ['rls']}
+
+" Set gd as ALEGoToDefinition
+nnoremap gd :ALEGoToDefinition<CR>
+
+" Set gh as ALEHover
+nnoremap gh :ALEHover<CR>
+
+" Set gr as ALEFindReferences
+nnoremap gr :ALEFindReferences<CR>
