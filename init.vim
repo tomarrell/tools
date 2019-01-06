@@ -37,6 +37,8 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'iCyMind/NeoSolarized'
   " Lots of colors
   Plug 'rafi/awesome-vim-colorschemes'
+  " Nova color scheme
+  Plug 'trevordmiller/nova-vim'
 
   " NerdTree vim tabs
   " Plug 'jistr/vim-nerdtree-tabs'
@@ -47,6 +49,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " The best Git wrapper of all time
   Plug 'tpope/vim-fugitive'
+
+  " Used for :Gbrowse in Fugitive
+  Plug 'tpope/vim-rhubarb'
 
   " Nerd commenter
   Plug 'scrooloose/nerdcommenter'
@@ -74,20 +79,30 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " Automcomplete
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+  " Typescript
+  Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+  Plug 'leafgarland/typescript-vim'
 call plug#end()
+
+set termguicolors
 
 " Options available: rafi/awesome-vim-colorschemes
 " Old theme: archery
-set background=dark
-let g:airline_theme = 'alduin'
 let g:two_firewatch_italics=1
-colorscheme two-firewatch
+colo two-firewatch
+let g:airline_theme='alduin'
+set background=dark
+" colorscheme nova
+
+" Turn off vim-go `gd` hijacking
+let g:go_def_mapping_enabled=0
 
 " Opens NERDTree automatically on startup
 autocmd VimEnter * NERDTree
 
 " Set AsyncRun to open QuickFix buffer
-let g:asyncrun_open = 8
+let g:asyncrun_open=8
 
 " Sets line numbers at the beginning of each line
 set number
@@ -137,7 +152,7 @@ set foldcolumn=1
 syntax enable
 
 " Enable flow syntax highlighting
-let g:javascript_plugin_flow = 1
+let g:javascript_plugin_flow=1
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -159,7 +174,7 @@ set si " Smart indent
 " Enable filetype plugins
 filetype plugin on
 " Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
+let g:NERDSpaceDelims=1
 
 " " Setup smooth scroll
 " nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<CR>
@@ -172,7 +187,7 @@ let g:NERDSpaceDelims = 1
 let g:nerdtree_tabs_autoclose=0
 
 " Allow JSX syntax highlighting in files without .jsx extension i.e. .js files
-let g:jsx_ext_required = 0
+let g:jsx_ext_required=0
 
 " Setup easy cd command to current file directory
 nnoremap ,cd :cd %:p:h<CR>
@@ -238,7 +253,7 @@ nnoremap _ :vert res -10<CR>
 nnoremap + :vert res +10<CR>
 
 " Autocomplete, deoplete
-let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup=1
 
 " Delete whitespace
 func! DeleteTrailingWS()
@@ -250,7 +265,14 @@ endfunc
 nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
 
 " Ale Linting and Language Server configuration
-let g:ale_linters = {'rust': ['rls']}
+let g:ale_linters = {
+\ 'rust': ['rls'],
+\ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jscs', 'jshint', 'standard', 'xo'],
+\ 'go': ['gofmt', 'golangserver']
+\}
+
+
+let g:ale_rust_rls_toolchain = 'stable'
 
 " Set gd as ALEGoToDefinition
 nnoremap gd :ALEGoToDefinition<CR>
