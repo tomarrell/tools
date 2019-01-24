@@ -219,8 +219,8 @@ nnoremap 11 :set includeexpr?<CR>
 " Quit buffer
 nnoremap <SPACE>qq :q<CR>
 
-" Async run command under cursor
-nnoremap <SPACE>br :.AsyncRun zsh<CR>
+" Async run command under cursor or highlighted selection
+noremap <SPACE>br :AsyncRun zsh -c "sed -e 's/$/ \\\/' \| zsh"<CR>
 
 " Close quickfix and preview windows
 nnoremap <SPACE>cc :ccl<CR>:pc<CR>
