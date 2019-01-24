@@ -237,7 +237,7 @@ nnoremap <SPACE>pd :echo @%<CR>
 nnoremap <SPACE>sp :Ag<CR>
 
 " Format JSON quickbind
-nnoremap <SPACE>fj :%!python -m json.tool<CR>
+nnoremap <SPACE>fj :.!python -m json.tool<CR>
 
 " Rust Bindings
 nnoremap <SPACE>rf :%!rustfmt<CR>
