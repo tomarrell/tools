@@ -103,6 +103,7 @@ autocmd VimEnter * NERDTree
 
 " Set AsyncRun to open QuickFix buffer
 let g:asyncrun_open=8
+let g:asyncrun_stdin=0
 
 " Sets line numbers at the beginning of each line
 set number
@@ -220,7 +221,9 @@ nnoremap 11 :set includeexpr?<CR>
 nnoremap <SPACE>qq :q<CR>
 
 " Async run command under cursor or highlighted selection
-noremap <SPACE>br :AsyncRun zsh -c "sed -e 's/$/ \\\/' \| zsh"<CR>
+noremap <SPACE>br :.AsyncRun zsh -c "awk '{ if(NR > 1) { print prev \" \\\\\" }; prev = \$0; } END { print prev \";\" }' \| zsh"<CR>
+" Async show command that would be generated
+noremap <SPACE>bs :.AsyncRun awk '{ if(NR > 1) { print prev " \\" }; prev = $0; } END { print prev ";" }'<CR>
 
 " Close quickfix and preview windows
 nnoremap <SPACE>cc :ccl<CR>:pc<CR>
@@ -236,8 +239,9 @@ nnoremap <SPACE>pd :echo @%<CR>
 " Ag Quick bind
 nnoremap <SPACE>sp :Ag<CR>
 
-" Format JSON quickbind
+" Format JSON quickbind, first is for line, second for file
 nnoremap <SPACE>fj :.!python -m json.tool<CR>
+nnoremap <SPACE>ff :%!python -m json.tool<CR>
 
 " Rust Bindings
 nnoremap <SPACE>rf :%!rustfmt<CR>
@@ -264,11 +268,17 @@ endfunc
 
 nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
 
-" Ale Linting and Language Server configuration
+" ALE Linting and Language Server configuration
 let g:ale_linters = {
 \ 'rust': ['rls'],
 \ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jscs', 'jshint', 'standard', 'xo'],
-\ 'go': ['gofmt', 'golangserver']
+\ 'go': ['gofmt', 'golangserver'],
+\ 'css': ['stylelint']
+\}
+
+" ALE Fixers
+let g:ale_fixers = {
+\ 'css': ['stylelint', 'prettier'],
 \}
 
 
