@@ -272,7 +272,7 @@ nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
 let g:ale_linters = {
 \ 'rust': ['rls'],
 \ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jscs', 'jshint', 'standard', 'xo'],
-\ 'go': ['gofmt', 'golangserver'],
+\ 'go': ['gofmt', 'golint', 'golangserver'],
 \ 'css': ['stylelint']
 \}
 
