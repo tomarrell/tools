@@ -138,6 +138,13 @@ set smartcase
 
 " Prevent text wrapping by default... It's annoying
 set nowrap
+" If you do want wrapping, match the indentation
+set breakindent
+" Indent by an additional 2 characters on wrapped lines,
+" when line >= 40 characters, put 'showbreak' at start of line
+set breakindentopt=shift:2,min:40,sbr
+" Append '>>' to indent
+set showbreak=>>
 
 " Set highlight for searching
 set hlsearch
