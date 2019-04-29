@@ -1,5 +1,9 @@
 call plug#begin('~/.local/share/nvim/plugged')
   " Look into https://vimawesome.com/plugin/vim-polyglot
+  Plug 'sheerun/vim-polyglot'
+
+  " Vim markdown viewer
+  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
   " Vim Airline status-bar
   Plug 'vim-airline/vim-airline'
@@ -140,11 +144,17 @@ set smartcase
 set nowrap
 " If you do want wrapping, match the indentation
 set breakindent
+" Break on whole words
+set linebreak
 " Indent by an additional 2 characters on wrapped lines,
 " when line >= 40 characters, put 'showbreak' at start of line
-set breakindentopt=shift:2,min:40,sbr
+" set breakindentopt=shift:2,min:40,sbr
 " Append '>>' to indent
-set showbreak=>>
+" set showbreak=>>
+
+" Go between visual lines instead of physical lines
+noremap j gj
+noremap k gk
 
 " Set highlight for searching
 set hlsearch
