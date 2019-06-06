@@ -101,6 +101,7 @@ set background=dark
 
 " Turn off vim-go `gd` hijacking
 let g:go_def_mapping_enabled=0
+let g:go_metalinter_autosave=0
 
 " Opens NERDTree automatically on startup
 autocmd VimEnter * NERDTree
@@ -231,9 +232,6 @@ nnoremap <SPACE>ga :Gwrite<CR>
 nnoremap <SPACE>gp :AsyncRun git push<CR>
 nnoremap <SPACE>gl :AsyncRun git pull<CR>
 
-" Check includeexpr
-nnoremap 11 :set includeexpr?<CR>
-
 " Quit buffer
 nnoremap <SPACE>qq :q<CR>
 
@@ -242,8 +240,8 @@ noremap <SPACE>br :.AsyncRun zsh -c "awk '{ if(NR > 1) { print prev \" \\\\\" };
 " Async show command that would be generated
 noremap <SPACE>bs :.AsyncRun awk '{ if(NR > 1) { print prev " \\" }; prev = $0; } END { print prev ";" }'<CR>
 
-" Close quickfix and preview windows
-nnoremap <SPACE>cc :ccl<CR>:pc<CR>
+" Close quickfix, location list and preview windows
+nnoremap <SPACE>cc :ccl<CR>:pc<CR>:lclose<CR>
 
 " Rest client
 map <SPACE>jj :call VrcQuery()<CR>
@@ -273,8 +271,13 @@ nnoremap - :vert res -10<CR>
 nnoremap _ :vert res -10<CR>
 nnoremap + :vert res +10<CR>
 
-" Autocomplete, deoplete
+" Deoplete Autocompletion
 let g:deoplete#enable_at_startup=1
+
+call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
+
+" Close preview window after completion
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
 
 " Delete whitespace
 func! DeleteTrailingWS()
@@ -300,6 +303,8 @@ let g:ale_fixers = {
 
 
 let g:ale_rust_rls_toolchain = 'stable'
+
+let g:ale_set_loclist = 0
 
 " Set gd as ALEGoToDefinition
 nnoremap gd :ALEGoToDefinition<CR>
