@@ -33,6 +33,13 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Asynchronous linting
   Plug 'w0rp/ale'
 
+  " Language server to replace ALE
+  " as ALE has too many bugs
+  Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
   " Magit inside Vim
   Plug 'jreybert/vimagit', { 'branch': 'next' }
 
@@ -292,7 +299,7 @@ nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
 let g:ale_linters = {
 \ 'rust': ['rls'],
 \ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jscs', 'jshint', 'standard', 'xo'],
-\ 'go': ['gofmt', 'golint', 'golangserver'],
+\ 'go': ['gofmt', 'golint'],
 \ 'css': ['stylelint']
 \}
 
@@ -301,16 +308,23 @@ let g:ale_fixers = {
 \ 'css': ['stylelint', 'prettier'],
 \}
 
-
 let g:ale_rust_rls_toolchain = 'stable'
 
 let g:ale_set_loclist = 0
 
+" ALE Stop All LSPs
+" nnoremap gq :ALEStopAllLSPs<CR>
+
 " Set gd as ALEGoToDefinition
-nnoremap gd :ALEGoToDefinition<CR>
+" nnoremap gd :ALEGoToDefinition<CR>
 
 " Set gh as ALEHover
-nnoremap gh :ALEHover<CR>
+" nnoremap gh :ALEHover<CR>
 
-" Set gr as ALEFindReferences
-nnoremap gr :ALEFindReferences<CR>
+let g:LanguageClient_serverCommands = {
+    \ 'go': ['gopls'],
+    \ }
+
+" Or map each action separately
+nnoremap <silent> gh :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
