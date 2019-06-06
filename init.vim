@@ -232,6 +232,9 @@ nnoremap <SPACE>ga :Gwrite<CR>
 nnoremap <SPACE>gp :AsyncRun git push<CR>
 nnoremap <SPACE>gl :AsyncRun git pull<CR>
 
+" Jump back to previous file
+nnoremap <C-p> <C-^>
+
 " Quit buffer
 nnoremap <SPACE>qq :q<CR>
 
@@ -292,7 +295,7 @@ nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
 let g:ale_linters = {
 \ 'rust': ['rls'],
 \ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jscs', 'jshint', 'standard', 'xo'],
-\ 'go': ['gofmt', 'golint', 'golangserver'],
+\ 'go': ['gofmt', 'golint', 'gopls'],
 \ 'css': ['stylelint']
 \}
 
@@ -300,7 +303,6 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \ 'css': ['stylelint', 'prettier'],
 \}
-
 
 let g:ale_rust_rls_toolchain = 'stable'
 
