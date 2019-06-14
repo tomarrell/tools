@@ -277,6 +277,10 @@ nnoremap + :vert res +10<CR>
 " Deoplete Autocompletion
 let g:deoplete#enable_at_startup=1
 
+call deoplete#custom#option({
+\ 'auto_complete_delay': 200,
+\ })
+
 call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 
 " Close preview window after completion
@@ -307,6 +311,9 @@ let g:ale_fixers = {
 let g:ale_rust_rls_toolchain = 'stable'
 
 let g:ale_set_loclist = 0
+
+" Stop LSPs
+nnoremap gq :ALEStopAllLSPs<CR>
 
 " Set gd as ALEGoToDefinition
 nnoremap gd :ALEGoToDefinition<CR>
