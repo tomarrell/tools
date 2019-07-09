@@ -87,6 +87,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Typescript
   Plug 'Shougo/vimproc.vim', {'do' : 'make'}
   Plug 'leafgarland/typescript-vim'
+
+  " Markdown Table
+  Plug 'dhruvasagar/vim-table-mode'
 call plug#end()
 
 set termguicolors
@@ -265,6 +268,18 @@ nnoremap <SPACE>ff :%!python -m json.tool<CR>
 nnoremap <SPACE>rf :%!rustfmt<CR>
 nnoremap <SPACE>rr :CargoRun<CR>
 
+" Table mode bindings
+nnoremap <SPACE>tt :TableModeToggle<CR>
+
+" Edit this file
+nnoremap <SPACE>ev :vnew<CR><C-w>L:e $MYVIMRC<CR>
+
+" Toggle file wrapping
+nnoremap <SPACE>ww :set wrap!<CR>
+
+" Remove highlights
+nnoremap <SPACE>rh :nohl<CR>
+
 " ||====================||
 " || End Emacs bindings ||
 " ||====================||
@@ -295,6 +310,13 @@ endfunc
 
 nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
 
+" Setup vim-go save formatters
+let g:go_fmt_options = {
+\ 'gofmt': '',
+\ 'goimports': '',
+\ }
+
+
 " ALE Linting and Language Server configuration
 let g:ale_linters = {
 \ 'rust': ['rls'],
@@ -311,6 +333,9 @@ let g:ale_fixers = {
 let g:ale_rust_rls_toolchain = 'stable'
 
 let g:ale_set_loclist = 0
+
+" Markdown table support
+let g:table_mode_corner='|'
 
 " Stop LSPs
 nnoremap gq :ALEStopAllLSPs<CR>
