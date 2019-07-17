@@ -51,6 +51,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   " read :help surround for detailed information
   Plug 'tpope/vim-surround'
 
+  " Vim align
+  Plug 'junegunn/vim-easy-align'
+
   " The best Git wrapper of all time
   Plug 'tpope/vim-fugitive'
 
@@ -113,6 +116,13 @@ autocmd VimEnter * NERDTree
 let g:asyncrun_open=8
 let g:asyncrun_stdin=0
 
+" Setup vim align
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
 " Sets line numbers at the beginning of each line
 set number
 
@@ -145,7 +155,7 @@ set ignorecase
 set smartcase
 
 " Prevent text wrapping by default... It's annoying
-set nowrap
+set wrap
 " If you do want wrapping, match the indentation
 set breakindent
 " Break on whole words
@@ -198,13 +208,6 @@ filetype plugin on
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims=1
 
-" " Setup smooth scroll
-" nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<CR>
-" nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
-
-" nnoremap <silent> <C-f> :call comfortable_motion#flick(200)<CR>
-" nnoremap <silent> <C-b> :call comfortable_motion#flick(-200)<CR>
-
 " Prevent vim-nerdtree-tabs from autoclosing vim when NERDTree is last buffer
 let g:nerdtree_tabs_autoclose=0
 
@@ -242,9 +245,8 @@ nnoremap <C-p> <C-^>
 nnoremap <SPACE>qq :q<CR>
 
 " Async run command under cursor or highlighted selection
-noremap <SPACE>br :.AsyncRun zsh -c "awk '{ if(NR > 1) { print prev \" \\\\\" }; prev = \$0; } END { print prev \";\" }' \| zsh"<CR>
-" Async show command that would be generated
-noremap <SPACE>bs :.AsyncRun awk '{ if(NR > 1) { print prev " \\" }; prev = $0; } END { print prev ";" }'<CR>
+noremap <SPACE>br :.AsyncRun -raw zsh<CR>
+noremap <SPACE>bs :.AsyncRun -raw cat<CR>
 
 " Close quickfix, location list and preview windows
 nnoremap <SPACE>cc :ccl<CR>:pc<CR>:lclose<CR>
@@ -288,6 +290,9 @@ nnoremap <SPACE>rh :nohl<CR>
 nnoremap - :vert res -10<CR>
 nnoremap _ :vert res -10<CR>
 nnoremap + :vert res +10<CR>
+
+" Insert Date with CTRL+d in insert mode
+imap <C-d> <C-R>=strftime("%FT%T%z")<CR>
 
 " Deoplete Autocompletion
 let g:deoplete#enable_at_startup=1
@@ -336,6 +341,14 @@ let g:ale_set_loclist = 0
 
 " Markdown table support
 let g:table_mode_corner='|'
+
+" Golang break single line into newlines
+" e.g. struct{}{test:"something", cool:"another"}
+" to   struct{}{
+"         test:"something",
+"         cool:"another"
+"      }
+nnoremap gob :s/\({\zs\\|,\ *\zs\\|}\)/\r&/g<CR><Bar>:'[,']normal ==<CR> :nohl<CR>
 
 " Stop LSPs
 nnoremap gq :ALEStopAllLSPs<CR>
