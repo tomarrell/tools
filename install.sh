@@ -9,6 +9,7 @@ brew cask install spectacle;
 brew cask install slack;
 brew cask install firefox;
 brew cask install bitwarden;
+brew cask install spotify;
 
 # CLI tools
 brew install neovim;
