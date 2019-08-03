@@ -13,6 +13,11 @@ source ~/.zshrc;
 # Install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
+# Fonts
+brew tap homebrew/cask-fonts;
+brew cask install font-fira-code;
+brew cask install font-ibm-plex;
+
 # GUI software
 brew cask install kitty;
 brew cask install spectacle;

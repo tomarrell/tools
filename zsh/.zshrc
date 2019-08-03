@@ -1,3 +1,7 @@
+# Char encoding
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+
 # Add Go binaries to path
 export PATH=$HOME/go/bin:$PATH
 
