@@ -5,7 +5,7 @@ mkdir -p ~/.config/tomarrell;
 git clone https://github.com/tomarrell/tools.git ~/.config/tomarrell/tools;
 
 # Neovim
-ln -s ~/.config/tomarrell/tools/nvim ~/.config/nvim
+ln -s ~/.config/tomarrell/tools/nvim ~/.config
 
 # Tmux
 ln -s ~/.config/tomarrell/tools/tmux/.tmux.conf ~/.tmux.conf;
