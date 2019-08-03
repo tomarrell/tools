@@ -10,6 +10,9 @@ brew install zsh zsh-completions;
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
 source ~/.zshrc;
 
+# Install nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+
 # GUI software
 brew cask install kitty;
 brew cask install spectacle;
@@ -29,6 +32,7 @@ brew install tig;
 brew install fzf;
 brew install ripgrep;
 brew install tree;
+brew install schollz/tap/croc;
 
 # Speed up key repeat, max is too slow
 defaults write -g InitialKeyRepeat -int 10;
