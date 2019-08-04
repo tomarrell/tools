@@ -38,6 +38,7 @@ brew install fzf;
 brew install ripgrep;
 brew install tree;
 brew install schollz/tap/croc;
+brew install the_silver_searcher;
 
 # Speed up key repeat, max is too slow
 defaults write -g InitialKeyRepeat -int 10;
