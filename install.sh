@@ -26,6 +26,7 @@ brew cask install firefox;
 brew cask install bitwarden;
 brew cask install spotify;
 brew cask install docker;
+brew cask install tunnelblick;
 
 # CLI tools
 brew install neovim;
@@ -41,6 +42,7 @@ brew install schollz/tap/croc;
 brew install the_silver_searcher;
 brew install nvm;
 brew install awscli;
+brew install bat;
 
 # Speed up key repeat, max is too slow
 defaults write -g InitialKeyRepeat -int 10;
