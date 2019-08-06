@@ -333,7 +333,11 @@ let g:ale_linters = {
 " ALE Fixers
 let g:ale_fixers = {
 \ 'css': ['stylelint', 'prettier'],
+\ 'javascript': ['prettier'],
+\ 'go': ['goimports']
 \}
+
+let g:ale_fix_on_save = 1
 
 let g:ale_rust_rls_toolchain = 'stable'
 
