@@ -13,6 +13,11 @@ source ~/.zshrc;
 # Install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 
+# Fonts
+brew tap homebrew/cask-fonts;
+brew cask install font-fira-code;
+brew cask install font-ibm-plex;
+
 # GUI software
 brew cask install kitty;
 brew cask install spectacle;
@@ -21,6 +26,7 @@ brew cask install firefox;
 brew cask install bitwarden;
 brew cask install spotify;
 brew cask install docker;
+brew cask install tunnelblick;
 
 # CLI tools
 brew install neovim;
@@ -33,6 +39,10 @@ brew install fzf;
 brew install ripgrep;
 brew install tree;
 brew install schollz/tap/croc;
+brew install the_silver_searcher;
+brew install nvm;
+brew install awscli;
+brew install bat;
 
 # Speed up key repeat, max is too slow
 defaults write -g InitialKeyRepeat -int 10;
