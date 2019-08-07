@@ -112,6 +112,8 @@ alias c="clear"
 
 alias ts="tig status"
 
+alias kt="kubectl --namespace=logistics"
+
 # Play nice inside Emacs
 if [ -n "$INSIDE_EMACS" ]; then
   chpwd() { print -P "\033AnSiTc %d" }
