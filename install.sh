@@ -48,5 +48,9 @@ brew install bat;
 defaults write -g InitialKeyRepeat -int 10;
 defaults write -g KeyRepeat -int 1;
 
+# Neovim setup python hooks
+pip3 install --user --upgrade pynvim;
+pip2 install --user --upgrade pynvim;
+
 # Install Xcode command line tools
 xcode-select --install;
