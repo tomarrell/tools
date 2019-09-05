@@ -4,10 +4,14 @@ export LC_CTYPE=en_US.UTF-8
 
 # Add Go binaries to path
 export PATH=$HOME/go/bin:$PATH
+export PATH=$PATH:/usr/local/opt/rabbitmq/sbin
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Add files in dir to completions
+fpath=(~/.config/tomarrell/tools/zsh/completions $fpath)
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/Tom/.oh-my-zsh"
@@ -64,13 +68,18 @@ source $ZSH/oh-my-zsh.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+alias git="hub"
+alias gpr="git pull-request"
+
 alias tomssh="ssh -i ~/.ssh/tomssh.pem ec2-user@ec2-54-144-70-62.compute-1.amazonaws.com"
+alias okapi="ssh -i ~/.ssh/okapissh ec2-user@ec2-13-55-74-244.ap-southeast-2.compute.amazonaws.com"
 
 alias c="clear"
 
 alias ts="tig status"
 
-alias kt="kubectl --namespace=logistics"
+alias kt="kubectl --context=theta-k8s-eu.sam-app.ro --namespace=logistics"
+alias km="kubectl --context=minikube"
 
 # Play nice inside Emacs
 if [ -n "$INSIDE_EMACS" ]; then
@@ -78,3 +87,6 @@ if [ -n "$INSIDE_EMACS" ]; then
   print -P "\033AnSiTu %n"
   print -P "\033AnSiTc %d"
 fi
+
+rm -f "$HOME/.zcompdump"
+compinit

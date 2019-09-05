@@ -325,6 +325,7 @@ let g:go_fmt_options = {
 " ALE Linting and Language Server configuration
 let g:ale_linters = {
 \ 'rust': ['rls'],
+\ 'ruby': ['solargraph'],
 \ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jscs', 'jshint', 'standard', 'xo'],
 \ 'go': ['gofmt', 'golint', 'gopls'],
 \ 'css': ['stylelint']
