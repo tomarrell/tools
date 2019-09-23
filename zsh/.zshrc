@@ -2,6 +2,9 @@
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
+# Use paging for Less
+export LESS="-SRF"
+
 # Add Go binaries to path
 export PATH=$HOME/go/bin:$PATH
 export PATH=$PATH:/usr/local/opt/rabbitmq/sbin
@@ -39,7 +42,7 @@ ZSH_THEME="lambda"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git z)
+plugins=(git z docker docker-compose)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -78,6 +81,9 @@ alias c="clear"
 
 alias ts="tig status"
 
+# Set horizontal paging for lots of columns
+alias psql="PAGER=\"less -S\" psql"
+
 alias kt="kubectl --context=theta-k8s-eu.sam-app.ro --namespace=logistics"
 alias km="kubectl --context=minikube"
 
@@ -87,6 +93,9 @@ if [ -n "$INSIDE_EMACS" ]; then
   print -P "\033AnSiTu %n"
   print -P "\033AnSiTc %d"
 fi
+
+# Kube completions
+source <(kubectl completion zsh)
 
 rm -f "$HOME/.zcompdump"
 compinit

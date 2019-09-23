@@ -31,7 +31,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'diepm/vim-rest-console'
 
   " Asynchronous linting
-  Plug 'w0rp/ale'
+  Plug 'w0rp/ale', { 'tag': 'v2.5.0' }
 
   " Magit inside Vim
   Plug 'jreybert/vimagit', { 'branch': 'next' }
@@ -122,6 +122,9 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+" Set completeoptions
+set completeopt=menu,preview,noinsert,noselect
 
 " Sets line numbers at the beginning of each line
 set number
@@ -299,6 +302,7 @@ let g:deoplete#enable_at_startup=1
 
 call deoplete#custom#option({
 \ 'auto_complete_delay': 200,
+\ 'refresh_always': v:true,
 \ })
 
 call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
@@ -327,7 +331,7 @@ let g:ale_linters = {
 \ 'rust': ['rls'],
 \ 'ruby': ['solargraph'],
 \ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jscs', 'jshint', 'standard', 'xo'],
-\ 'go': ['gofmt', 'golint', 'gopls'],
+\ 'go': ['gofmt', 'golint', 'gopls', 'govet'],
 \ 'css': ['stylelint']
 \}
 
