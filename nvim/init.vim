@@ -22,30 +22,15 @@ call plug#begin('~/.local/share/nvim/plugged')
   " 'Distraction free editing'
   Plug 'junegunn/goyo.vim'
 
-  " Plug 'yuttie/comfortable-motion.vim'
-
   " Javascript tags
   Plug 'ramitos/jsctags'
 
   " Vim REST client
   Plug 'diepm/vim-rest-console'
 
-  " Asynchronous linting
-  Plug 'w0rp/ale', { 'tag': 'v2.5.0' }
-
-  " Magit inside Vim
-  Plug 'jreybert/vimagit', { 'branch': 'next' }
-
   "" Color Schemes
-  " Solarized Color Scheme
-  Plug 'iCyMind/NeoSolarized'
   " Lots of colors
   Plug 'rafi/awesome-vim-colorschemes'
-  " Nova color scheme
-  Plug 'trevordmiller/nova-vim'
-
-  " NerdTree vim tabs
-  " Plug 'jistr/vim-nerdtree-tabs'
 
   " Easy modification of bracket pairs
   " read :help surround for detailed information
@@ -69,10 +54,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " Javascript + syntax highlighting
   Plug 'pangloss/vim-javascript'
+  Plug 'maxmellon/vim-jsx-pretty'
   Plug 'heavenshell/vim-jsdoc'
   Plug 'elzr/vim-json'
   Plug 'moll/vim-node'
-  Plug 'mxw/vim-jsx'
   " Javascript smart gf
   Plug 'tomarrell/vim-npr'
 
@@ -84,15 +69,15 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'timonv/vim-cargo'
   " Plug 'racer-rust/vim-racer'
 
-  " Automcomplete
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
   " Typescript
   Plug 'Shougo/vimproc.vim', {'do' : 'make'}
   Plug 'leafgarland/typescript-vim'
 
   " Markdown Table
   Plug 'dhruvasagar/vim-table-mode'
+
+  " Use release branch
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 set termguicolors
@@ -122,9 +107,6 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
-
-" Set completeoptions
-set completeopt=menu,preview,noinsert,noselect
 
 " Sets line numbers at the beginning of each line
 set number
@@ -297,16 +279,6 @@ nnoremap + :vert res +10<CR>
 " Insert Date with CTRL+d in insert mode
 imap <C-d> <C-R>=strftime("%FT%T%z")<CR>
 
-" Deoplete Autocompletion
-let g:deoplete#enable_at_startup=1
-
-call deoplete#custom#option({
-\ 'auto_complete_delay': 200,
-\ 'refresh_always': v:true,
-\ })
-
-call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
-
 " Close preview window after completion
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
 
@@ -325,29 +297,6 @@ let g:go_fmt_options = {
 \ 'goimports': '',
 \ }
 
-
-" ALE Linting and Language Server configuration
-let g:ale_linters = {
-\ 'rust': ['rls'],
-\ 'ruby': ['solargraph'],
-\ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jscs', 'jshint', 'standard', 'xo'],
-\ 'go': ['gofmt', 'golint', 'gopls', 'govet'],
-\ 'css': ['stylelint']
-\}
-
-" ALE Fixers
-let g:ale_fixers = {
-\ 'css': ['stylelint', 'prettier'],
-\ 'javascript': ['prettier'],
-\ 'go': ['goimports']
-\}
-
-let g:ale_fix_on_save = 1
-
-let g:ale_rust_rls_toolchain = 'stable'
-
-let g:ale_set_loclist = 0
-
 " Markdown table support
 let g:table_mode_corner='|'
 
@@ -359,14 +308,69 @@ let g:table_mode_corner='|'
 "      }
 nnoremap gob :s/\({\zs\\|,\ *\zs\\|}\)/\r&/g<CR><Bar>:'[,']normal ==<CR> :nohl<CR>
 
-" Stop LSPs
-nnoremap gq :ALEStopAllLSPs<CR>
+" Cursorline
+set nocursorline
+hi CursorLine term=bold cterm=bold
 
-" Set gd as ALEGoToDefinition
-nnoremap gd :ALEGoToDefinition<CR>
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Set gh as ALEHover
-nnoremap gh :ALEHover<CR>
+" https://github.com/neoclide/coc.nvim#example-vim-configuration
+inoremap <silent><expr> <c-space> coc#refresh()
 
-" Set gr as ALEFindReferences
-nnoremap gr :ALEFindReferences<CR>
+" gd - go to definition of word under cursor
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+
+" gi - go to implementation
+nmap <silent> gi <Plug>(coc-implementation)
+
+" gr - find references
+nmap <silent> gr <Plug>(coc-references)
+
+" gh - get hint on whatever's under the cursor
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> gh :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>cs  :<C-u>CocList -I symbols<cr>
+
+" List errors
+nnoremap <silent> <leader>cl  :<C-u>CocList locationlist<cr>
+
+" list commands available in tsserver (and others)
+nnoremap <silent> <leader>cc  :<C-u>CocList commands<cr>
+
+" restart when tsserver gets wonky
+nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
+
+" view all errors
+nnoremap <silent> <leader>cl  :<C-u>CocList locationlist<CR>
+
+" manage extensions
+nnoremap <silent> <leader>cx  :<C-u>CocList extensions<cr>
+
+" rename the current word in the cursor
+nmap <leader>cr  <Plug>(coc-rename)
+nmap <leader>cf  <Plug>(coc-format-selected)
+vmap <leader>cf  <Plug>(coc-format-selected)
+
+" run code actions
+vmap <leader>ca  <Plug>(coc-codeaction-selected)
+nmap <leader>ca  <Plug>(coc-codeaction-selected)
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
+autocmd BufWritePre *.go :OR

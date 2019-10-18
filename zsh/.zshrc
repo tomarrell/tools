@@ -2,16 +2,9 @@
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
-# Use paging for Less
-export LESS="-SRF"
-
 # Add Go binaries to path
 export PATH=$HOME/go/bin:$PATH
 export PATH=$PATH:/usr/local/opt/rabbitmq/sbin
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Add files in dir to completions
 fpath=(~/.config/tomarrell/tools/zsh/completions $fpath)
@@ -81,8 +74,11 @@ alias c="clear"
 
 alias ts="tig status"
 
+alias t="tmux"
+alias ta="tmux attach"
+
 # Set horizontal paging for lots of columns
-alias psql="PAGER=\"less -S\" psql"
+alias psql="LESS=\"-SRF\" PAGER=\"less -S\" psql"
 
 alias kt="kubectl --context=theta-k8s-eu.sam-app.ro --namespace=logistics"
 alias km="kubectl --context=minikube"
