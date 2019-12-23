@@ -62,7 +62,10 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tomarrell/vim-npr'
 
   " Go
-  Plug 'fatih/vim-go'
+  " Plug 'fatih/vim-go'
+  Plug 'fatih/vim-go', {'tag': 'v1.21'}
+  " Go test auto generation
+  Plug 'buoto/gotests-vim'
 
   " Rust
   Plug 'rust-lang/rust.vim'
@@ -78,6 +81,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " Use release branch
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'jjo/vim-cue'
 call plug#end()
 
 set termguicolors
@@ -164,6 +168,7 @@ set novisualbell
 
 " Add a bit extra margin to the left
 set foldcolumn=1
+set nofoldenable
 
 " Enable syntax highlighting
 syntax enable
@@ -186,6 +191,9 @@ set tabstop=2
 
 set ai " Auto indent
 set si " Smart indent
+
+" Auto wrap comments at 80 chars
+set tw=80
 
 " NERD Commenter
 " Enable filetype plugins
@@ -222,6 +230,9 @@ nnoremap <SPACE>gs :Gstatus<CR>
 nnoremap <SPACE>ga :Gwrite<CR>
 nnoremap <SPACE>gp :AsyncRun git push<CR>
 nnoremap <SPACE>gl :AsyncRun git pull<CR>
+
+" Go mappings
+nnoremap <SPACE>gt :GoTests<CR>
 
 " Jump back to previous file
 nnoremap <C-p> <C-^>
@@ -267,6 +278,9 @@ nnoremap <SPACE>ww :set wrap!<CR>
 " Remove highlights
 nnoremap <SPACE>rh :nohl<CR>
 
+" Restart Coc
+nnoremap <SPACE>cs :CocRestart<CR>
+
 " ||====================||
 " || End Emacs bindings ||
 " ||====================||
@@ -293,7 +307,7 @@ nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
 
 " Setup vim-go save formatters
 let g:go_fmt_options = {
-\ 'gofmt': '',
+\ 'gofmt': '-s',
 \ 'goimports': '',
 \ }
 
@@ -344,33 +358,40 @@ endfunction
 " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
-nnoremap <silent> <leader>cs  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <leader>co :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>cs :<C-u>CocList -I symbols<cr>
 
 " List errors
-nnoremap <silent> <leader>cl  :<C-u>CocList locationlist<cr>
+nnoremap <silent> <leader>cl :<C-u>CocList locationlist<cr>
 
 " list commands available in tsserver (and others)
-nnoremap <silent> <leader>cc  :<C-u>CocList commands<cr>
+nnoremap <silent> <leader>cc :<C-u>CocList commands<cr>
 
 " restart when tsserver gets wonky
-nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
+nnoremap <silent> <leader>cR :<C-u>CocRestart<CR>
 
 " view all errors
-nnoremap <silent> <leader>cl  :<C-u>CocList locationlist<CR>
+nnoremap <silent> <leader>cl :<C-u>CocList locationlist<CR>
 
 " manage extensions
-nnoremap <silent> <leader>cx  :<C-u>CocList extensions<cr>
+nnoremap <silent> <leader>cx :<C-u>CocList extensions<cr>
 
 " rename the current word in the cursor
-nmap <leader>cr  <Plug>(coc-rename)
-nmap <leader>cf  <Plug>(coc-format-selected)
-vmap <leader>cf  <Plug>(coc-format-selected)
+nmap <leader>cr <Plug>(coc-rename)
+nmap <leader>cf <Plug>(coc-format-selected)
+vmap <leader>cf <Plug>(coc-format-selected)
 
 " run code actions
-vmap <leader>ca  <Plug>(coc-codeaction-selected)
-nmap <leader>ca  <Plug>(coc-codeaction-selected)
+vmap <leader>ca <Plug>(coc-codeaction-selected)
+nmap <leader>ca <Plug>(coc-codeaction-selected)
 
 " use `:OR` for organize import of current buffer
 command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
 autocmd BufWritePre *.go :OR
+
+" Search for selected text
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+" Cue filetype
+autocmd BufRead,BufNewFile *.cue setlocal filetype=cue
+
