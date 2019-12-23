@@ -65,14 +65,19 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 alias git="hub"
-alias gpr="git pull-request"
+alias gpr="git pull-request --browse"
 
 alias tomssh="ssh -i ~/.ssh/tomssh.pem ec2-user@ec2-54-144-70-62.compute-1.amazonaws.com"
 alias okapi="ssh -i ~/.ssh/okapissh ec2-user@ec2-13-55-74-244.ap-southeast-2.compute.amazonaws.com"
+alias houston="ssh logistics@10.15.21.198"
+alias dwh="ssh sumup@10.2.5.182 -i ~/.ssh/sumup_rsa"
 
 alias c="clear"
+alias ip="curl ifconfig.me"
+alias we="watchexec"
 
 alias ts="tig status"
+alias gst="git fetch; git status;"
 
 alias t="tmux"
 alias ta="tmux attach"
@@ -82,6 +87,8 @@ alias psql="LESS=\"-SRF\" PAGER=\"less -S\" psql"
 
 alias kt="kubectl --context=theta-k8s-eu.sam-app.ro --namespace=logistics"
 alias km="kubectl --context=minikube"
+alias eks="aws-vault exec sumup-dev -- kubectl --context=arn:aws:eks:eu-west-1:342529858988:cluster/eks-dev"
+alias okapi="ssh -i ~/.ssh/okapissh ec2-user@ec2-13-55-74-244.ap-southeast-2.compute.amazonaws.com"
 
 # Play nice inside Emacs
 if [ -n "$INSIDE_EMACS" ]; then
