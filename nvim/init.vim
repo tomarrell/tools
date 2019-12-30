@@ -1,7 +1,4 @@
 call plug#begin('~/.local/share/nvim/plugged')
-  " Look into https://vimawesome.com/plugin/vim-polyglot
-  Plug 'sheerun/vim-polyglot'
-
   " Vim markdown viewer
   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
@@ -63,7 +60,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " Go
   " Plug 'fatih/vim-go'
-  Plug 'fatih/vim-go', {'tag': 'v1.21'}
+  Plug 'fatih/vim-go'
   " Go test auto generation
   Plug 'buoto/gotests-vim'
 
@@ -82,6 +79,8 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Use release branch
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'jjo/vim-cue'
+
+  Plug 'sheerun/vim-polyglot', { 'do' : './build' }
 call plug#end()
 
 set termguicolors
@@ -289,6 +288,9 @@ nnoremap <SPACE>cs :CocRestart<CR>
 nnoremap - :vert res -10<CR>
 nnoremap _ :vert res -10<CR>
 nnoremap + :vert res +10<CR>
+
+" Use jj as escape to prevent pinky finger
+imap jj <Esc>
 
 " Insert Date with CTRL+d in insert mode
 imap <C-d> <C-R>=strftime("%FT%T%z")<CR>
