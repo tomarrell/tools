@@ -67,7 +67,7 @@ source $ZSH/oh-my-zsh.sh
 alias git="hub"
 alias gpr="git pull-request --browse"
 
-alias tomssh="ssh -i ~/.ssh/tomssh.pem ec2-user@ec2-54-144-70-62.compute-1.amazonaws.com"
+alias tomssh="ssh -i ~/.ssh/tomssh.pem ec2-user@100.127.229.45"
 alias okapi="ssh -i ~/.ssh/okapissh ec2-user@ec2-13-55-74-244.ap-southeast-2.compute.amazonaws.com"
 alias houston="ssh logistics@10.15.21.198"
 alias dwh="ssh sumup@10.2.5.182 -i ~/.ssh/sumup_rsa"
@@ -85,7 +85,8 @@ alias ta="tmux attach"
 # Set horizontal paging for lots of columns
 alias psql="LESS=\"-SRF\" PAGER=\"less -S\" psql"
 
-alias kt="kubectl --context=theta-k8s-eu.sam-app.ro --namespace=logistics"
+alias kt="kubectl --context=theta --namespace=logistics"
+alias ks="kubectl --context=staging --namespace=logistics"
 alias km="kubectl --context=minikube"
 alias eks="aws-vault exec sumup-dev -- kubectl --context=arn:aws:eks:eu-west-1:342529858988:cluster/eks-dev"
 alias okapi="ssh -i ~/.ssh/okapissh ec2-user@ec2-13-55-74-244.ap-southeast-2.compute.amazonaws.com"
@@ -97,8 +98,23 @@ if [ -n "$INSIDE_EMACS" ]; then
   print -P "\033AnSiTc %d"
 fi
 
+# Print the absolute path of a file
+realpath() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+
+loadnvm() {
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+}
+
 # Kube completions
 source <(kubectl completion zsh)
 
 rm -f "$HOME/.zcompdump"
 compinit
+
+source /Users/tom/Library/Preferences/org.dystroy.broot/launcher/bash/br
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/vault vault

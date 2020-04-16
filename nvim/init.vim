@@ -9,6 +9,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Vim incsearch
   Plug 'haya14busa/is.vim'
 
+  " Case converter
+  Plug 'nicwest/vim-camelsnek'
+
   " Async command runner
   " Look at https://github.com/skywind3000/asyncrun.vim
   Plug 'skywind3000/asyncrun.vim'
@@ -59,7 +62,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tomarrell/vim-npr'
 
   " Go
-  " Plug 'fatih/vim-go'
   Plug 'fatih/vim-go'
   " Go test auto generation
   Plug 'buoto/gotests-vim'
@@ -76,8 +78,11 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Markdown Table
   Plug 'dhruvasagar/vim-table-mode'
 
-  " Use release branch
+  " Use release branch (Recommend)
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  " Or build from source code by use yarn: https://yarnpkg.com
+  " Plug 'neoclide/coc.nvim', {'do': 'npm install'}
+
   Plug 'jjo/vim-cue'
 
   Plug 'sheerun/vim-polyglot', { 'do' : './build' }
@@ -290,7 +295,9 @@ nnoremap _ :vert res -10<CR>
 nnoremap + :vert res +10<CR>
 
 " Use jj as escape to prevent pinky finger
-imap jj <Esc>
+inoremap jk <Esc>
+" Set escape to nothing to prevent muscle memory
+inoremap <Esc> <nop>
 
 " Insert Date with CTRL+d in insert mode
 imap <C-d> <C-R>=strftime("%FT%T%z")<CR>
