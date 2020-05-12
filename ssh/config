@@ -1,0 +1,5 @@
+# Personal AWS ec2 machine over Tailscale
+Host tom
+  HostName 100.127.229.45
+  User ec2-user
+  IdentityFile ~/.ssh/tomssh.pem
