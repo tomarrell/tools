@@ -3,3 +3,29 @@ Host tom
   HostName 100.127.229.45
   User ec2-user
   IdentityFile ~/.ssh/tomssh.pem
+
+Host tunnel
+  HostName ec2-54-144-70-62.compute-1.amazonaws.com
+  User logistics
+  Port 9000
+  IdentityFile ~/.ssh/houston
+
+Host dwh
+  # HostName dwhsc-bi.sumup.aws
+  HostName 10.2.5.182
+  User sumup
+  IdentityFile ~/.ssh/sumup_rsa
+
+Host docstore
+  HostName docstore.internal.sumup.com
+  User shipment_etl
+  IdentityFile ~/.ssh/shipment_etl_key
+
+Host arvato
+  HostName 109.235.138.203
+  User mobile_jp6_sumup_de_tu1
+
+Host houston
+  HostName 10.15.21.198
+  User logistics
+  IdentityFile ~/.ssh/houston

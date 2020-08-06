@@ -5,6 +5,7 @@ export LC_CTYPE=en_US.UTF-8
 # Add Go binaries to path
 export PATH=$HOME/go/bin:$PATH
 export PATH=$PATH:/usr/local/opt/rabbitmq/sbin
+export PATH=$PATH:/Users/tom/.linkerd2/bin
 
 # Add files in dir to completions
 fpath=(~/.config/tomarrell/tools/zsh/completions $fpath)
@@ -64,6 +65,18 @@ source $ZSH/oh-my-zsh.sh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# WORK
+
+alias getresponses="scp -r arvato:/prod_jp6/out/orderresponse/archiv/ ."
+
+# PERSONAL
+
+# Always use Python3
+alias python="python3"
+
+alias tf="terraform"
+alias tg="terragrunt"
+
 alias git="hub"
 alias gpr="git pull-request --browse"
 
@@ -88,6 +101,7 @@ alias psql="LESS=\"-SRF\" PAGER=\"less -S\" psql"
 alias kt="kubectl --context=theta --namespace=logistics"
 alias ks="kubectl --context=staging --namespace=logistics"
 alias km="kubectl --context=minikube"
+alias k="kubectl --context=personal"
 alias eks="aws-vault exec sumup-dev -- kubectl --context=arn:aws:eks:eu-west-1:342529858988:cluster/eks-dev"
 alias okapi="ssh -i ~/.ssh/okapissh ec2-user@ec2-13-55-74-244.ap-southeast-2.compute.amazonaws.com"
 
@@ -118,3 +132,7 @@ source /Users/tom/Library/Preferences/org.dystroy.broot/launcher/bash/br
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/vault vault
+
+s() {
+  aws-vault exec $AWS_VAULT_PROFILE -- $@
+}

@@ -1,4 +1,9 @@
 {
   "yaml.format.singleQuote": true,
-  "yaml.format.enable": true
+  "yaml.format.enable": true,
+  "python.jediPath": "/usr/local/lib/python3.7/site-packages/jedi",
+  "python.jediEnabled": true,
+  "go.disable": {
+    "workspaceFolders": false
+  }
 }
