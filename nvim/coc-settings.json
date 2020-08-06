@@ -1,9 +1,23 @@
 {
+  "diagnostic.level": "warning",
+  "coc.preferences.useQuickfixForLocations": true,
+  "coc.preferences.messageLevel": "more",
+  "coc.preferences.formatOnType": true,
+
   "yaml.format.singleQuote": true,
   "yaml.format.enable": true,
   "python.jediPath": "/usr/local/lib/python3.7/site-packages/jedi",
   "python.jediEnabled": true,
-  "go.disable": {
-    "workspaceFolders": false
+
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".git/"],
+      "disableWorkspaceFolders": true,
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "completeUnimported": true
+      }
+    }
   }
 }

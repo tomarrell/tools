@@ -2,6 +2,8 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Vim markdown viewer
   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
+  Plug 'neovim/nvim-lsp'
+
   " Vim Airline status-bar
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
@@ -62,7 +64,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tomarrell/vim-npr'
 
   " Go
-  Plug 'fatih/vim-go'
+  " Plug 'fatih/vim-go'
   " Go test auto generation
   Plug 'buoto/gotests-vim'
 
@@ -78,15 +80,14 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Markdown Table
   Plug 'dhruvasagar/vim-table-mode'
 
-  " Use release branch (Recommend)
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  " Or build from source code by use yarn: https://yarnpkg.com
-  " Plug 'neoclide/coc.nvim', {'do': 'npm install'}
-
   Plug 'jjo/vim-cue'
 
   Plug 'sheerun/vim-polyglot', { 'do' : './build' }
 call plug#end()
+
+lua << EOF
+require'nvim_lsp'.gopls.setup{}
+EOF
 
 set termguicolors
 
@@ -282,8 +283,6 @@ nnoremap <SPACE>ww :set wrap!<CR>
 " Remove highlights
 nnoremap <SPACE>rh :nohl<CR>
 
-" Restart Coc
-nnoremap <SPACE>cs :CocRestart<CR>
 
 " ||====================||
 " || End Emacs bindings ||
@@ -304,6 +303,9 @@ imap <C-d> <C-R>=strftime("%FT%T%z")<CR>
 
 " Close preview window after completion
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
+
+" Format *.go files on save
+" autocmd BufWritePost *.go %!gofumpt
 
 " Delete whitespace
 func! DeleteTrailingWS()
@@ -335,72 +337,41 @@ nnoremap gob :s/\({\zs\\|,\ *\zs\\|}\)/\r&/g<CR><Bar>:'[,']normal ==<CR> :nohl<C
 set nocursorline
 hi CursorLine term=bold cterm=bold
 
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" https://github.com/neoclide/coc.nvim#example-vim-configuration
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" gd - go to definition of word under cursor
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-
-" gi - go to implementation
-nmap <silent> gi <Plug>(coc-implementation)
-
-" gr - find references
-nmap <silent> gr <Plug>(coc-references)
-
-" gh - get hint on whatever's under the cursor
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-nnoremap <silent> gh :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-nnoremap <silent> <leader>co :<C-u>CocList outline<cr>
-nnoremap <silent> <leader>cs :<C-u>CocList -I symbols<cr>
-
-" List errors
-nnoremap <silent> <leader>cl :<C-u>CocList locationlist<cr>
-
-" list commands available in tsserver (and others)
-nnoremap <silent> <leader>cc :<C-u>CocList commands<cr>
-
-" restart when tsserver gets wonky
-nnoremap <silent> <leader>cR :<C-u>CocRestart<CR>
-
-" view all errors
-nnoremap <silent> <leader>cl :<C-u>CocList locationlist<CR>
-
-" manage extensions
-nnoremap <silent> <leader>cx :<C-u>CocList extensions<cr>
-
-" rename the current word in the cursor
-nmap <leader>cr <Plug>(coc-rename)
-nmap <leader>cf <Plug>(coc-format-selected)
-vmap <leader>cf <Plug>(coc-format-selected)
-
-" run code actions
-vmap <leader>ca <Plug>(coc-codeaction-selected)
-nmap <leader>ca <Plug>(coc-codeaction-selected)
-
-" use `:OR` for organize import of current buffer
-command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
-autocmd BufWritePre *.go :OR
-
 " Search for selected text
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " Cue filetype
 autocmd BufRead,BufNewFile *.cue setlocal filetype=cue
 
+"
+" NVIM LSP
+"
+nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gh <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> gs <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> gy <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gw <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+
+autocmd Filetype go setlocal omnifunc=v:lua.vim.lsp.omnifunc
+
+function! OpenCompletion()
+  call feedkeys("\<C-x>\<C-o>", "n")
+endfunction
+
+autocmd InsertCharPre * call OpenCompletion()
+
+set completeopt+=menuone,noselect,noinsert
+
+" Restart Nvim LSP
+nnoremap <SPACE>cs :call RestartLSP()<CR>
+
+func! RestartLSP()
+lua << EOF
+vim.lsp.stop_client(vim.lsp.get_active_clients())
+EOF
+  sleep 1000m
+  bufdo e
+endfunc
