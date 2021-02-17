@@ -2,7 +2,15 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Vim markdown viewer
   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
+  " Cnext etc
+  Plug 'tpope/vim-unimpaired'
+
   Plug 'neovim/nvim-lsp'
+  Plug 'nvim-lua/completion-nvim'
+  Plug 'davidhalter/jedi-vim'
+  " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  " Plug 'Shougo/deoplete-lsp'
 
   " Vim Airline status-bar
   Plug 'vim-airline/vim-airline'
@@ -64,7 +72,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tomarrell/vim-npr'
 
   " Go
-  " Plug 'fatih/vim-go'
+  Plug 'fatih/vim-go'
   " Go test auto generation
   Plug 'buoto/gotests-vim'
 
@@ -84,10 +92,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   Plug 'sheerun/vim-polyglot', { 'do' : './build' }
 call plug#end()
-
-lua << EOF
-require'nvim_lsp'.gopls.setup{}
-EOF
 
 set termguicolors
 
@@ -322,6 +326,8 @@ let g:go_fmt_options = {
 \ 'goimports': '',
 \ }
 
+let g:go_fmt_command = "goimports"
+
 " Markdown table support
 let g:table_mode_corner='|'
 
@@ -346,6 +352,47 @@ autocmd BufRead,BufNewFile *.cue setlocal filetype=cue
 "
 " NVIM LSP
 "
+lua << EOF
+local nvim_lsp = require('lspconfig')
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { }
+
+  -- Set some keybinds conditional on server capabilities
+  if client.resolved_capabilities.document_formatting then
+    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  elseif client.resolved_capabilities.document_range_formatting then
+    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+  end
+
+  -- Set autocommands conditional on server_capabilities
+  if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_exec([[
+      hi LspReferenceRead  gui=bold guibg=#5f5f87
+      hi LspReferenceText  gui=bold guibg=#5f5f87
+      hi LspReferenceWrite gui=bold guibg=#5f5f87
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]], false)
+  end
+end
+
+-- Use a loop to conveniently both setup defined servers 
+-- and map buffer local keybindings when the language server attaches
+local servers = { "gopls", "terraformls" }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup { on_attach = on_attach }
+end
+EOF
+
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gh <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
@@ -354,24 +401,10 @@ nnoremap <silent> gy <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gw <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> gn <cmd>lua vim.lsp.buf.rename()<CR>
+inoremap <silent> <c-f> <cmd>lua vim.lsp.buf.signature_help()<CR>
 
-autocmd Filetype go setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
-function! OpenCompletion()
-  call feedkeys("\<C-x>\<C-o>", "n")
-endfunction
-
-autocmd InsertCharPre * call OpenCompletion()
+" Use completion-nvim in every buffer
+autocmd BufEnter * lua require'completion'.on_attach()
 
 set completeopt+=menuone,noselect,noinsert
-
-" Restart Nvim LSP
-nnoremap <SPACE>cs :call RestartLSP()<CR>
-
-func! RestartLSP()
-lua << EOF
-vim.lsp.stop_client(vim.lsp.get_active_clients())
-EOF
-  sleep 1000m
-  bufdo e
-endfunc
