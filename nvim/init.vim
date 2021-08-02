@@ -5,9 +5,12 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Cnext etc
   Plug 'tpope/vim-unimpaired'
 
+  " Spell check
+  Plug 'dpelle/vim-LanguageTool'
+
   Plug 'neovim/nvim-lsp'
   Plug 'nvim-lua/completion-nvim'
-  Plug 'davidhalter/jedi-vim'
+  " Plug 'davidhalter/jedi-vim'
   " Plug 'neoclide/coc.nvim', {'branch': 'release'}
   " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   " Plug 'Shougo/deoplete-lsp'
@@ -72,7 +75,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'tomarrell/vim-npr'
 
   " Go
-  Plug 'fatih/vim-go'
+  " Plug 'fatih/vim-go'
   " Go test auto generation
   Plug 'buoto/gotests-vim'
 
@@ -113,6 +116,7 @@ autocmd VimEnter * NERDTree
 " Set AsyncRun to open QuickFix buffer
 let g:asyncrun_open=8
 let g:asyncrun_stdin=0
+
 
 " Setup vim align
 " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -222,6 +226,8 @@ nnoremap ,cd :cd %:p:h<CR>
 " Tidy HTML Command
 :command! Thtml :%!tidy -q -mi -wrap 0 --show-errors 0
 
+autocmd Filetype html,gohtmltmpl set formatoptions-=t
+
 " ||======================||
 " || Emacs Style Bindings ||
 " ||======================||
@@ -241,7 +247,8 @@ nnoremap <SPACE>gp :AsyncRun git push<CR>
 nnoremap <SPACE>gl :AsyncRun git pull<CR>
 
 " Go mappings
-nnoremap <SPACE>gt :GoTests<CR>
+nnoremap <SPACE>gt :GoTestFunc<CR>
+nnoremap <SPACE>fe ddkoreturn fmt.Errorf(": %v", err)<ESC>T:hi
 
 " Jump back to previous file
 nnoremap <C-p> <C-^>
@@ -302,8 +309,10 @@ inoremap jk <Esc>
 " Set escape to nothing to prevent muscle memory
 inoremap <Esc> <nop>
 
-" Insert Date with CTRL+d in insert mode
-imap <C-d> <C-R>=strftime("%FT%T%z")<CR>
+" Insert date with CTRL+d in insert mode
+inoremap <C-d> <C-R>=strftime("%F %T %z")<CR>
+" Insert human readable date with CTRL+r in insert mode
+inoremap <C-r> <C-R>=strftime("%c")<CR>
 
 " Close preview window after completion
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
@@ -373,9 +382,9 @@ local on_attach = function(client, bufnr)
   -- Set autocommands conditional on server_capabilities
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec([[
-      hi LspReferenceRead  gui=bold guibg=#5f5f87
-      hi LspReferenceText  gui=bold guibg=#5f5f87
-      hi LspReferenceWrite gui=bold guibg=#5f5f87
+      hi LspReferenceRead  gui=bold guibg=#51517a " original: #5f5f87
+      hi LspReferenceText  gui=bold guibg=#51517a
+      hi LspReferenceWrite gui=bold guibg=#51517a
       augroup lsp_document_highlight
         autocmd! * <buffer>
         autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
@@ -408,3 +417,4 @@ inoremap <silent> <c-f> <cmd>lua vim.lsp.buf.signature_help()<CR>
 autocmd BufEnter * lua require'completion'.on_attach()
 
 set completeopt+=menuone,noselect,noinsert
+

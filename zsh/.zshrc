@@ -2,6 +2,12 @@
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
+export VISUAL=nvim
+export EDITOR="$VISUAL"
+
+# Make GPG work with git
+export GPG_TTY=$(tty)
+
 # Add Go binaries to path
 export PATH=$HOME/go/bin:$PATH
 export PATH=$PATH:/usr/local/opt/rabbitmq/sbin
@@ -36,7 +42,7 @@ ZSH_THEME="lambda"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git z docker docker-compose)
+plugins=(git z docker docker-compose kubectl golang)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -80,7 +86,7 @@ alias tg="terragrunt"
 alias git="hub"
 alias gpr="git pull-request --browse"
 
-alias tomssh="ssh -i ~/.ssh/tomssh.pem ec2-user@100.127.229.45"
+alias tomssh="ssh -i ~/.ssh/tomssh.pem ec2-user@3.80.92.209"
 alias okapi="ssh -i ~/.ssh/okapissh ec2-user@ec2-13-55-74-244.ap-southeast-2.compute.amazonaws.com"
 alias houston="ssh logistics@10.15.21.198"
 alias dwh="ssh sumup@10.2.5.182 -i ~/.ssh/sumup_rsa"
@@ -98,12 +104,12 @@ alias ta="tmux attach"
 # Set horizontal paging for lots of columns
 alias psql="LESS=\"-SRF\" PAGER=\"less -S\" psql"
 
-alias kt="kubectl --context=theta --namespace=logistics"
-alias ks="kubectl --context=staging --namespace=logistics"
-alias km="kubectl --context=minikube"
-alias k="kubectl --context=personal"
+alias k="kubectl"
 alias eks="aws-vault exec sumup-dev -- kubectl --context=arn:aws:eks:eu-west-1:342529858988:cluster/eks-dev"
 alias okapi="ssh -i ~/.ssh/okapissh ec2-user@ec2-13-55-74-244.ap-southeast-2.compute.amazonaws.com"
+
+# Copy a generated uuid to the clipboard
+alias uuid="curl pie.dev/uuid | jq .uuid -r | tr -d '\n' | pbcopy"
 
 # Play nice inside Emacs
 if [ -n "$INSIDE_EMACS" ]; then
@@ -136,3 +142,5 @@ complete -o nospace -C /usr/local/bin/vault vault
 s() {
   aws-vault exec $AWS_VAULT_PROFILE -- $@
 }
+
+[[ -s "/Users/tom/.gvm/scripts/gvm" ]] && source "/Users/tom/.gvm/scripts/gvm"
