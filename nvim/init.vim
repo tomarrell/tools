@@ -8,12 +8,13 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Spell check
   Plug 'dpelle/vim-LanguageTool'
 
-  Plug 'neovim/nvim-lsp'
-  Plug 'nvim-lua/completion-nvim'
-  " Plug 'davidhalter/jedi-vim'
-  " Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  " Plug 'Shougo/deoplete-lsp'
+  " Based on https://github.com/ray-x/go.nvim
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'nvim-treesitter/nvim-treesitter'
+  Plug 'mfussenegger/nvim-dap'
+  Plug 'rcarriga/nvim-dap-ui'
+  Plug 'theHamsta/nvim-dap-virtual-text'
+  Plug 'ray-x/go.nvim'
 
   " Vim Airline status-bar
   Plug 'vim-airline/vim-airline'
@@ -41,16 +42,15 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Vim REST client
   Plug 'diepm/vim-rest-console'
 
-  "" Color Schemes
-  " Lots of colors
-  Plug 'rafi/awesome-vim-colorschemes'
-
   " Easy modification of bracket pairs
   " read :help surround for detailed information
   Plug 'tpope/vim-surround'
 
   " Vim align
   Plug 'junegunn/vim-easy-align'
+
+  " Colour schemes
+  Plug 'rafi/awesome-vim-colorschemes'
 
   " The best Git wrapper of all time
   Plug 'tpope/vim-fugitive'
@@ -74,15 +74,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Javascript smart gf
   Plug 'tomarrell/vim-npr'
 
-  " Go
-  " Plug 'fatih/vim-go'
-  " Go test auto generation
-  Plug 'buoto/gotests-vim'
-
   " Rust
   Plug 'rust-lang/rust.vim'
   Plug 'timonv/vim-cargo'
-  " Plug 'racer-rust/vim-racer'
 
   " Typescript
   Plug 'Shougo/vimproc.vim', {'do' : 'make'}
@@ -92,8 +86,6 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'dhruvasagar/vim-table-mode'
 
   Plug 'jjo/vim-cue'
-
-  Plug 'sheerun/vim-polyglot', { 'do' : './build' }
 call plug#end()
 
 set termguicolors
@@ -318,7 +310,7 @@ inoremap <C-r> <C-R>=strftime("%c")<CR>
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
 
 " Format *.go files on save
-" autocmd BufWritePost *.go %!gofumpt
+" autocmd BufWritePost *.go :Gofmt
 
 " Delete whitespace
 func! DeleteTrailingWS()
@@ -361,60 +353,36 @@ autocmd BufRead,BufNewFile *.cue setlocal filetype=cue
 "
 " NVIM LSP
 "
-lua << EOF
-local nvim_lsp = require('lspconfig')
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+lua <<EOF
+require 'go'.setup({
+  goimport = 'gopls', -- if set to 'gopls' will use golsp format
+  gofmt = 'gopls', -- if set to gopls will use golsp format
+  max_line_line = 120,
+  tag_transform = false,
+  test_dir = '',
+  comment_placeholder = '  –  ',
+  lsp_cfg = true, -- false: use your own lspconfig
+  lsp_gofumpt = true, -- true: set default gofmt in gopls format to gofumpt
+  lsp_on_attach = true, -- use on_attach from go.nvim
+  dap_debug = true,
+})
 
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+local protocol = require'vim.lsp.protocol'
 
-  -- Mappings.
-  local opts = { }
-
-  -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-  end
-
-  -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
-      hi LspReferenceRead  gui=bold guibg=#51517a " original: #5f5f87
-      hi LspReferenceText  gui=bold guibg=#51517a
-      hi LspReferenceWrite gui=bold guibg=#51517a
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]], false)
-  end
-end
-
--- Use a loop to conveniently both setup defined servers 
--- and map buffer local keybindings when the language server attaches
-local servers = { "gopls", "terraformls" }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { on_attach = on_attach }
-end
+-- Import on save
+vim.api.nvim_exec([[ autocmd BufWritePre *.go :silent! lua require('go.format').goimport() ]], false)
 EOF
 
-nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> gh <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> gs <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> gy <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gw <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <silent> gn <cmd>lua vim.lsp.buf.rename()<CR>
-inoremap <silent> <c-f> <cmd>lua vim.lsp.buf.signature_help()<CR>
-
-" Use completion-nvim in every buffer
-autocmd BufEnter * lua require'completion'.on_attach()
+" nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
+" nnoremap <silent> gh <cmd>lua vim.lsp.buf.hover()<CR>
+" nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+" nnoremap <silent> gs <cmd>lua vim.lsp.buf.signature_help()<CR>
+" nnoremap <silent> gy <cmd>lua vim.lsp.buf.type_definition()<CR>
+" nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
+" nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<CR>
+" nnoremap <silent> gw <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+" nnoremap <silent> gn <cmd>lua vim.lsp.buf.rename()<CR>
+" inoremap <silent> <c-f> <cmd>lua vim.lsp.buf.signature_help()<CR>
 
 set completeopt+=menuone,noselect,noinsert
 
