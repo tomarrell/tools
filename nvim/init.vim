@@ -89,6 +89,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 call plug#end()
 
 set termguicolors
+autocmd ColorScheme * highlight CocHighlightText gui=bold guibg=#51517a
 
 " Options available: rafi/awesome-vim-colorschemes
 " Old theme: archery
@@ -367,40 +368,35 @@ endfunction
 " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-nnoremap <silent> <leader>co :<C-u>CocList outline<cr>
-nnoremap <silent> <leader>cs :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <space>co :<C-u>CocList outline<cr>
+nnoremap <silent> <space>cs :<C-u>CocList -I symbols<cr>
 
 " List errors
-nnoremap <silent> <leader>cl :<C-u>CocList locationlist<cr>
+nnoremap <silent> <space>cl :<C-u>CocList locationlist<cr>
 
 " list commands available in tsserver (and others)
-nnoremap <silent> <leader>cc :<C-u>CocList commands<cr>
+nnoremap <silent> <space>cc :<C-u>CocList commands<cr>
 
 " restart when tsserver gets wonky
-nnoremap <silent> <leader>cR :<C-u>CocRestart<CR>
+nnoremap <silent> <space>cR :<C-u>CocRestart<CR>
 
 " view all errors
-nnoremap <silent> <leader>cl :<C-u>CocList locationlist<CR>
+nnoremap <silent> <space>cl :<C-u>CocList locationlist<CR>
 
 " manage extensions
-nnoremap <silent> <leader>cx :<C-u>CocList extensions<cr>
+nnoremap <silent> <space>cx :<C-u>CocList extensions<cr>
 
 " rename the current word in the cursor
-nmap <leader>cr <Plug>(coc-rename)
-nmap <leader>cf <Plug>(coc-format-selected)
-vmap <leader>cf <Plug>(coc-format-selected)
+nmap <space>cr <Plug>(coc-rename)
+nmap <space>cf <Plug>(coc-format-selected)
+vmap <space>cf <Plug>(coc-format-selected)
 
 " run code actions
-vmap <leader>ca <Plug>(coc-codeaction-selected)
-nmap <leader>ca <Plug>(coc-codeaction-selected)
-
-" use `:OR` for organize import of current buffer
-command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
-autocmd BufWritePre *.go :OR
+vmap <space>ca <Plug>(coc-codeaction-selected)
+nmap <space>ca <Plug>(coc-codeaction-selected)
 
 " Search for selected text
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " Cue filetype
 autocmd BufRead,BufNewFile *.cue setlocal filetype=cue
-

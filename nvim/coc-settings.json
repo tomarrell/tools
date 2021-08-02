@@ -3,6 +3,7 @@
   "yaml.format.enable": true,
   "python.jediPath": "/usr/local/lib/python3.7/site-packages/jedi",
   "python.jediEnabled": true,
+  "coc.preferences.colorSupport": false,
   "go.disable": {
     "workspaceFolders": false
   }
