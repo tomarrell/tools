@@ -7,6 +7,9 @@ export PATH=$HOME/go/bin:$PATH
 export PATH=$PATH:/usr/local/opt/rabbitmq/sbin
 export PATH=$PATH:/Users/tom/.linkerd2/bin
 
+# Fix for Git signing with GPG
+export GPG_TTY=$(tty)
+
 # Add files in dir to completions
 fpath=(~/.config/tomarrell/tools/zsh/completions $fpath)
 
