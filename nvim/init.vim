@@ -238,6 +238,7 @@ nnoremap <SPACE>gl :AsyncRun git pull<CR>
 
 " Go mappings
 nnoremap <SPACE>gt :GoTests<CR>
+nnoremap <SPACE>fe ddkoreturn fmt.Errorf(": %v", err)<ESC>T:hi
 
 " Jump back to previous file
 nnoremap <C-p> <C-^>
