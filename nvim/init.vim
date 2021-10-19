@@ -30,10 +30,16 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'nvim-telescope/telescope.nvim'
 
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " We recommend updating the parsers on update
+
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/nvim-cmp'
 call plug#end()
 
 set termguicolors
 autocmd ColorScheme * highlight CocHighlightText gui=bold guibg=#51517a
+
+syntax enable " Enable syntax highlighting
 
 " Options available: rafi/awesome-vim-colorschemes
 " Old theme: archery
@@ -45,80 +51,48 @@ colo nordfox
 " let g:airline_theme='alduin'
 set background=dark
 
-" Opens NERDTree automatically on startup
-autocmd VimEnter * NERDTree
+autocmd VimEnter * NERDTree " Opens NERDTree automatically on startup
 
-" Sets line numbers at the beginning of each line
-set number
-
-" Sets how many lines of history VIM has to remember
-set history=500
+set number " Sets line numbers at the beginning of each line
 
 " Make a copy of the file and overwrite the original one.
 " This prevents file watchers from missing the file updated and not triggering a reload.
 " I'm looking at you Webpack...
 set backupcopy=yes
+set autoread " Set to auto read when a file is changed from the outside
 
-" Set 7 lines to the cursor - when moving vertically using j/k
-set so=10
-
-" Set to auto read when a file is changed from the outside
-set autoread
+set so=10 " Set 7 lines to the cursor - when moving vertically using j/k
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
 
-" Height of the command bar
-set cmdheight=2
+set cmdheight=1 " Height of the command bar
+set wildmenu " Turn on the WiLd menu
+set ignorecase " Ignore case when searching
+set smartcase " When searching try to be smart about cases
 
-" Turn on the WiLd menu
-set wildmenu
-
-" Ignore case when searching
-set ignorecase
-
-" When searching try to be smart about cases
-set smartcase
-
-" Prevent text wrapping by default... It's annoying
-set wrap
-" If you do want wrapping, match the indentation
-set breakindent
-" Break on whole words
-set linebreak
-" Indent by an additional 2 characters on wrapped lines,
-" when line >= 40 characters, put 'showbreak' at start of line
-" set breakindentopt=shift:2,min:40,sbr
-" Append '>>' to indent
-" set showbreak=>>
+set wrap " Prevent text wrapping by default... It's annoying
+set breakindent " If you do want wrapping, match the indentation
+set linebreak " Break on whole words
 
 " Go between visual lines instead of physical lines
 noremap j gj
 noremap k gk
 
-" Set highlight for searching
-set hlsearch
-
-" No annoying sound on errors
-set noerrorbells
+set hlsearch " Set highlight for searching
+set noerrorbells " No annoying sound on errors
 set novisualbell
 
 " Add a bit extra margin to the left
-set foldcolumn=1
-set nofoldenable
+" set foldcolumn=0
 
-" Enable syntax highlighting
-syntax enable
+set nofoldenable " Open all folds
 
-" Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
+set encoding=utf8 " Set utf8 as standard encoding and en_US as the standard language
+set expandtab " Use spaces instead of tabs
 
-" Use spaces instead of tabs
-set expandtab
-
-" Be smart when using tabs ;)
-set smarttab
+set smarttab " Be smart when using tabs ;)
 
 " 1 tab == 4 spaces
 set shiftwidth=2
@@ -139,9 +113,6 @@ let g:NERDSpaceDelims=1
 " Prevent vim-nerdtree-tabs from autoclosing vim when NERDTree is last buffer
 let g:nerdtree_tabs_autoclose=0
 
-" Setup easy cd command to current file directory
-nnoremap ,cd :cd %:p:h<CR>
-
 " ||======================||
 " || Emacs Style Bindings ||
 " ||======================||
@@ -156,9 +127,6 @@ nnoremap <SPACE>cd :execute 'cd %:p:h'<CR>
 
 " Jump back to previous file
 nnoremap <C-p> <C-^>
-
-" Quit buffer
-nnoremap <SPACE>qq :q<CR>
 
 " Close quickfix, location list and preview windows
 nnoremap <SPACE>cc :ccl<CR>:pc<CR>:lclose<CR>
@@ -213,6 +181,9 @@ hi CursorLine term=bold cterm=bold
 " || Language Server ||
 " ||=================||
 
+" Format on write
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
+
 lua << EOF
 local nvim_lsp = require('lspconfig')
 
@@ -240,7 +211,22 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>f', ':lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- Setup nvim-cmp.
+local cmp = require'cmp'
+
+cmp.setup({
+  mapping = {
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+  }
+})
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
@@ -249,10 +235,22 @@ for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup({
     on_attach = on_attach,
     indent = { enable = true },
-    capabilities = capabilities
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   })
 end
 
+local actions = require('telescope.actions')
+
+require('telescope').setup({
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous
+      }
+    }
+  }
+})
 
 local ts = require('nvim-treesitter.configs')
 ts.setup({
@@ -264,6 +262,6 @@ EOF
 
 " Find files using Telescope command-line sugar.
 nnoremap <space>pf :Telescope find_files<cr>
-nnoremap <space>pg :Telescope live_grep<cr>
+nnoremap <space>sp :Telescope live_grep<cr>
 nnoremap <space>pb :Telescope buffers<cr>
 nnoremap <space>ph :Telescope help_tags<cr>
