@@ -6,6 +6,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   " File explorer sidebar
   Plug 'scrooloose/nerdtree'
 
+  " Better / search
+  Plug 'haya14busa/is.vim'
+
   " Color Schemes
   Plug 'rafi/awesome-vim-colorschemes'
   Plug 'kdheepak/monochrome.nvim'
@@ -96,8 +99,6 @@ noremap k gk
 
 " Set highlight for searching
 set hlsearch
-
-nnoremap j :noh<return>j
 
 " No annoying sound on errors
 set noerrorbells
