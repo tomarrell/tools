@@ -1,91 +1,32 @@
 call plug#begin('~/.local/share/nvim/plugged')
-  " Vim markdown viewer
-  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-
   " Vim Airline status-bar
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
 
-  " Vim incsearch
-  Plug 'haya14busa/is.vim'
-
-  " Case converter
-  Plug 'nicwest/vim-camelsnek'
-
-  " Async command runner
-  " Look at https://github.com/skywind3000/asyncrun.vim
-  Plug 'skywind3000/asyncrun.vim'
-
   " File explorer sidebar
   Plug 'scrooloose/nerdtree'
 
-  " 'Distraction free editing'
-  Plug 'junegunn/goyo.vim'
-
-  " Javascript tags
-  Plug 'ramitos/jsctags'
-
-  " Vim REST client
-  Plug 'diepm/vim-rest-console'
-
-  "" Color Schemes
-  " Lots of colors
+  " Color Schemes
   Plug 'rafi/awesome-vim-colorschemes'
+  Plug 'kdheepak/monochrome.nvim'
+  Plug 'rose-pine/neovim'
+  Plug 'EdenEast/nightfox.nvim'
 
   " Easy modification of bracket pairs
   " read :help surround for detailed information
   Plug 'tpope/vim-surround'
 
-  " Vim align
-  Plug 'junegunn/vim-easy-align'
-
-  " The best Git wrapper of all time
-  Plug 'tpope/vim-fugitive'
-
-  " Used for :Gbrowse in Fugitive
-  Plug 'tpope/vim-rhubarb'
-
   " Nerd commenter
   Plug 'scrooloose/nerdcommenter'
 
-  " Fuzzy file find
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-  Plug 'junegunn/fzf.vim'
+  " Neovim language server
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'williamboman/nvim-lsp-installer', { 'branch': 'main' }
 
-  " Javascript + syntax highlighting
-  Plug 'pangloss/vim-javascript'
-  Plug 'maxmellon/vim-jsx-pretty'
-  Plug 'heavenshell/vim-jsdoc'
-  Plug 'elzr/vim-json'
-  Plug 'moll/vim-node'
-  " Javascript smart gf
-  Plug 'tomarrell/vim-npr'
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'nvim-telescope/telescope.nvim'
 
-  " Go
-  Plug 'fatih/vim-go'
-  " Go test auto generation
-  Plug 'buoto/gotests-vim'
-
-  " Rust
-  Plug 'rust-lang/rust.vim'
-  Plug 'timonv/vim-cargo'
-  " Plug 'racer-rust/vim-racer'
-
-  " Typescript
-  Plug 'Shougo/vimproc.vim', {'do' : 'make'}
-  Plug 'leafgarland/typescript-vim'
-
-  " Markdown Table
-  Plug 'dhruvasagar/vim-table-mode'
-
-  " Use release branch (Recommend)
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  " Or build from source code by use yarn: https://yarnpkg.com
-  " Plug 'neoclide/coc.nvim', {'do': 'npm install'}
-
-  Plug 'jjo/vim-cue'
-
-  Plug 'sheerun/vim-polyglot', { 'do' : './build' }
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " We recommend updating the parsers on update
 call plug#end()
 
 set termguicolors
@@ -93,29 +34,16 @@ autocmd ColorScheme * highlight CocHighlightText gui=bold guibg=#51517a
 
 " Options available: rafi/awesome-vim-colorschemes
 " Old theme: archery
-let g:two_firewatch_italics=1
-colo two-firewatch
-let g:airline_theme='alduin'
+" let g:two_firewatch_italics=1
+" colo two-firewatch
+colo nordfox
+" colo rose-pine
+" let g:rose_pine_variant = 'moon'
+" let g:airline_theme='alduin'
 set background=dark
-" colorscheme nova
-
-" Turn off vim-go `gd` hijacking
-let g:go_def_mapping_enabled=0
-let g:go_metalinter_autosave=0
 
 " Opens NERDTree automatically on startup
 autocmd VimEnter * NERDTree
-
-" Set AsyncRun to open QuickFix buffer
-let g:asyncrun_open=8
-let g:asyncrun_stdin=0
-
-" Setup vim align
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
 
 " Sets line numbers at the beginning of each line
 set number
@@ -123,7 +51,9 @@ set number
 " Sets how many lines of history VIM has to remember
 set history=500
 
-" Make a copy of the file and overwrite the original one. This prevents file watchers from missing the file updated and not triggering a reload. I'm looking at you Webpack...
+" Make a copy of the file and overwrite the original one.
+" This prevents file watchers from missing the file updated and not triggering a reload.
+" I'm looking at you Webpack...
 set backupcopy=yes
 
 " Set 7 lines to the cursor - when moving vertically using j/k
@@ -167,6 +97,8 @@ noremap k gk
 " Set highlight for searching
 set hlsearch
 
+nnoremap j :noh<return>j
+
 " No annoying sound on errors
 set noerrorbells
 set novisualbell
@@ -177,9 +109,6 @@ set nofoldenable
 
 " Enable syntax highlighting
 syntax enable
-
-" Enable flow syntax highlighting
-let g:javascript_plugin_flow=1
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -209,14 +138,8 @@ let g:NERDSpaceDelims=1
 " Prevent vim-nerdtree-tabs from autoclosing vim when NERDTree is last buffer
 let g:nerdtree_tabs_autoclose=0
 
-" Allow JSX syntax highlighting in files without .jsx extension i.e. .js files
-let g:jsx_ext_required=0
-
 " Setup easy cd command to current file directory
 nnoremap ,cd :cd %:p:h<CR>
-
-" Tidy HTML Command
-:command! Thtml :%!tidy -q -mi -wrap 0 --show-errors 0
 
 " ||======================||
 " || Emacs Style Bindings ||
@@ -230,50 +153,18 @@ nnoremap <SPACE>nt :NERDTreeToggle<CR>
 nnoremap <SPACE>nf :NERDTreeFind<CR>
 nnoremap <SPACE>cd :execute 'cd %:p:h'<CR>
 
-" Git mappings
-nnoremap <SPACE>gs :Gstatus<CR>
-nnoremap <SPACE>ga :Gwrite<CR>
-nnoremap <SPACE>gp :AsyncRun git push<CR>
-nnoremap <SPACE>gl :AsyncRun git pull<CR>
-
-" Go mappings
-nnoremap <SPACE>gt :GoTests<CR>
-nnoremap <SPACE>fe ddkoreturn fmt.Errorf(": %v", err)<ESC>T:hi
-
 " Jump back to previous file
 nnoremap <C-p> <C-^>
 
 " Quit buffer
 nnoremap <SPACE>qq :q<CR>
 
-" Async run command under cursor or highlighted selection
-noremap <SPACE>br :.AsyncRun -raw zsh<CR>
-noremap <SPACE>bs :.AsyncRun -raw cat<CR>
-
 " Close quickfix, location list and preview windows
 nnoremap <SPACE>cc :ccl<CR>:pc<CR>:lclose<CR>
-
-" Rest client
-map <SPACE>jj :call VrcQuery()<CR>
-
-" FZF Quick bind
-nnoremap <SPACE>pf :FZF<CR>
-" Print current file path
-nnoremap <SPACE>pd :echo @%<CR>
-
-" Ag Quick bind
-nnoremap <SPACE>sp :Ag<CR>
 
 " Format JSON quickbind, first is for line, second for file
 nnoremap <SPACE>fj :.!python -m json.tool<CR>
 nnoremap <SPACE>ff :%!python -m json.tool<CR>
-
-" Rust Bindings
-nnoremap <SPACE>rf :%!rustfmt<CR>
-nnoremap <SPACE>rr :CargoRun<CR>
-
-" Table mode bindings
-nnoremap <SPACE>tt :TableModeToggle<CR>
 
 " Edit this file
 nnoremap <SPACE>ev :vnew<CR><C-w>L:e $MYVIMRC<CR>
@@ -283,9 +174,6 @@ nnoremap <SPACE>ww :set wrap!<CR>
 
 " Remove highlights
 nnoremap <SPACE>rh :nohl<CR>
-
-" Restart Coc
-nnoremap <SPACE>cs :CocRestart<CR>
 
 " ||====================||
 " || End Emacs bindings ||
@@ -316,88 +204,65 @@ endfunc
 
 nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
 
-" Setup vim-go save formatters
-let g:go_fmt_options = {
-\ 'gofmt': '-s',
-\ 'goimports': '',
-\ }
-
-" Markdown table support
-let g:table_mode_corner='|'
-
-" Golang break single line into newlines
-" e.g. struct{}{test:"something", cool:"another"}
-" to   struct{}{
-"         test:"something",
-"         cool:"another"
-"      }
-nnoremap gob :s/\({\zs\\|,\ *\zs\\|}\)/\r&/g<CR><Bar>:'[,']normal ==<CR> :nohl<CR>
-
 " Cursorline
 set nocursorline
 hi CursorLine term=bold cterm=bold
 
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
+" ||=================||
+" || Language Server ||
+" ||=================||
 
-" https://github.com/neoclide/coc.nvim#example-vim-configuration
-inoremap <silent><expr> <c-space> coc#refresh()
+lua << EOF
+local nvim_lsp = require('lspconfig')
 
-" gd - go to definition of word under cursor
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-" gi - go to implementation
-nmap <silent> gi <Plug>(coc-implementation)
+  -- Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-" gr - find references
-nmap <silent> gr <Plug>(coc-references)
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
 
-" gh - get hint on whatever's under the cursor
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-nnoremap <silent> gh :call <SID>show_documentation()<CR>
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'gh', ':lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', ':lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', 'gy', ':lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', ':lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', ':lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', ':lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<space>f', ':lua vim.lsp.buf.formatting()<CR>', opts)
+end
 
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+local servers = { 'gopls' }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup({
+    on_attach = on_attach,
+    indent = { enable = true },
+    capabilities = capabilities
+  })
+end
 
 
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
+local ts = require('nvim-treesitter.configs')
+ts.setup({
+  ensure_installed = 'maintained',
+  highlight = { enable = true },
+  rainbow = { enable = true },
+})
+EOF
 
-nnoremap <silent> <space>co :<C-u>CocList outline<cr>
-nnoremap <silent> <space>cs :<C-u>CocList -I symbols<cr>
-
-" List errors
-nnoremap <silent> <space>cl :<C-u>CocList locationlist<cr>
-
-" list commands available in tsserver (and others)
-nnoremap <silent> <space>cc :<C-u>CocList commands<cr>
-
-" restart when tsserver gets wonky
-nnoremap <silent> <space>cR :<C-u>CocRestart<CR>
-
-" view all errors
-nnoremap <silent> <space>cl :<C-u>CocList locationlist<CR>
-
-" manage extensions
-nnoremap <silent> <space>cx :<C-u>CocList extensions<cr>
-
-" rename the current word in the cursor
-nmap <space>cr <Plug>(coc-rename)
-nmap <space>cf <Plug>(coc-format-selected)
-vmap <space>cf <Plug>(coc-format-selected)
-
-" run code actions
-vmap <space>ca <Plug>(coc-codeaction-selected)
-nmap <space>ca <Plug>(coc-codeaction-selected)
-
-" Search for selected text
-vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-
-" Cue filetype
-autocmd BufRead,BufNewFile *.cue setlocal filetype=cue
+" Find files using Telescope command-line sugar.
+nnoremap <space>pf :Telescope find_files<cr>
+nnoremap <space>pg :Telescope live_grep<cr>
+nnoremap <space>pb :Telescope buffers<cr>
+nnoremap <space>ph :Telescope help_tags<cr>

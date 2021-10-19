@@ -7,6 +7,8 @@ export PATH=$HOME/go/bin:$PATH
 export PATH=$PATH:/usr/local/opt/rabbitmq/sbin
 export PATH=$PATH:/Users/tom/.linkerd2/bin
 
+export PATH=$PATH:/Users/tom/.local/share/nvim/lsp_servers/go
+
 # Fix for Git signing with GPG
 export GPG_TTY=$(tty)
 
