@@ -6,6 +6,9 @@ call plug#begin('~/.local/share/nvim/plugged')
   " File explorer sidebar
   Plug 'scrooloose/nerdtree'
 
+  " formatting
+  Plug 'sbdchd/neoformat'
+
   " Better / search
   Plug 'haya14busa/is.vim'
 
@@ -184,8 +187,48 @@ hi CursorLine term=bold cterm=bold
 " Format on write
 autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
 
+augroup fmt
+  autocmd!
+  autocmd BufWritePre *.go Neoformat
+augroup END
+
 lua << EOF
-local nvim_lsp = require('lspconfig')
+-- Setup nvim-cmp.
+local cmp = require'cmp'
+
+cmp.setup({
+  mapping = {
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+  }
+})
+
+local actions = require('telescope.actions')
+
+require('telescope').setup({
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous
+      }
+    }
+  }
+})
+
+local ts = require('nvim-treesitter.configs')
+ts.setup({
+  ensure_installed = 'maintained',
+  highlight = { enable = true },
+  rainbow = { enable = true },
+})
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -211,53 +254,15 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>f', ':lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
--- Setup nvim-cmp.
-local cmp = require'cmp'
-
-cmp.setup({
-  mapping = {
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  },
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'buffer' },
-  }
-})
-
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-local servers = { 'gopls' }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup({
+local lsp_installer = require('nvim-lsp-installer')
+lsp_installer.on_server_ready(function(server)
+  server:setup({
     on_attach = on_attach,
     indent = { enable = true },
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   })
-end
-
-local actions = require('telescope.actions')
-
-require('telescope').setup({
-  defaults = {
-    mappings = {
-      i = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous
-      }
-    }
-  }
-})
-
-local ts = require('nvim-treesitter.configs')
-ts.setup({
-  ensure_installed = 'maintained',
-  highlight = { enable = true },
-  rainbow = { enable = true },
-})
+  vim.cmd [[ do User LspAttachBuffers ]]
+end)
 EOF
 
 " Find files using Telescope command-line sugar.
@@ -265,3 +270,5 @@ nnoremap <space>pf :Telescope find_files<cr>
 nnoremap <space>sp :Telescope live_grep<cr>
 nnoremap <space>pb :Telescope buffers<cr>
 nnoremap <space>ph :Telescope help_tags<cr>
+
+nnoremap <SPACE>fe ddkoreturn fmt.Errorf(": %v", err)<ESC>T:hi
