@@ -28,9 +28,8 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Vim REST client
   Plug 'diepm/vim-rest-console'
 
-  "" Color Schemes
-  " Lots of colors
-  Plug 'rafi/awesome-vim-colorschemes'
+  " Color scheme
+  Plug 'EdenEast/nightfox.nvim'
 
   " Easy modification of bracket pairs
   " read :help surround for detailed information
@@ -89,15 +88,13 @@ call plug#begin('~/.local/share/nvim/plugged')
 call plug#end()
 
 set termguicolors
-autocmd ColorScheme * highlight CocHighlightText gui=bold guibg=#51517a
 
-" Options available: rafi/awesome-vim-colorschemes
-" Old theme: archery
-let g:two_firewatch_italics=1
-colo two-firewatch
-let g:airline_theme='alduin'
-set background=dark
-" colorscheme nova
+set t_Co=256
+let &t_ut=''
+
+" autocmd ColorScheme * highlight CocHighlightText gui=bold guibg=#51517a
+
+colorscheme nightfox
 
 " Turn off vim-go `gd` hijacking
 let g:go_def_mapping_enabled=0

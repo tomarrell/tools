@@ -7,6 +7,8 @@ export PATH=$HOME/go/bin:$PATH
 export PATH=$PATH:/usr/local/opt/rabbitmq/sbin
 export PATH=$PATH:/Users/tom/.linkerd2/bin
 
+alias tmux="TERM=screen-256color-bce tmux"
+
 # Fix for Git signing with GPG
 export GPG_TTY=$(tty)
 
