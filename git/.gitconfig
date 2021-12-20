@@ -1,0 +1,22 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Tom Arrell
+	email = tom.arrell@gmail.com
+	signingKey = A5E3D9D260A58474
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[core]
+	pager = delta --dark
+[pull]
+	rebase = false
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[commit]
+	gpgsign = true
+[alias]
+	logs = log --show-signature
+[gpg]
+	program = gpg
