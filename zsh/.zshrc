@@ -133,8 +133,6 @@ source <(kubectl completion zsh)
 rm -f "$HOME/.zcompdump"
 compinit
 
-source /Users/tom/Library/Preferences/org.dystroy.broot/launcher/bash/br
-
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/vault vault
 
