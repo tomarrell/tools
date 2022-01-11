@@ -1,6 +1,8 @@
 call plug#begin('~/.local/share/nvim/plugged')
-  " Vim markdown viewer
-  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+  " If you don't have nodejs and yarn
+  " use pre build, add 'vim-plug' to the filetype list so vim-plug can update this plugin
+  " see: https://github.com/iamcco/markdown-preview.nvim/issues/50
+  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
   " Vim Airline status-bar
   Plug 'vim-airline/vim-airline'
@@ -8,6 +10,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " Treesitter
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+
+  " Firewatch
+  Plug 'rakr/vim-two-firewatch'
 
   " Vim incsearch
   Plug 'haya14busa/is.vim'
@@ -95,9 +100,9 @@ set termguicolors
 set t_Co=256
 let &t_ut=''
 
-" autocmd ColorScheme * highlight CocHighlightText gui=bold guibg=#51517a
+autocmd ColorScheme * highlight CocHighlightText gui=bold guibg=#51517a
 
-colorscheme nightfox
+colorscheme two-firewatch
 
 " Turn off vim-go `gd` hijacking
 let g:go_def_mapping_enabled=0
