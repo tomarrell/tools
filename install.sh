@@ -10,23 +10,20 @@ brew install zsh zsh-completions;
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)";
 source ~/.zshrc;
 
-# Install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-
 # Fonts
 brew tap homebrew/cask-fonts;
-brew cask install font-fira-code;
-brew cask install font-ibm-plex;
+brew install --cask font-fira-code;
+brew install --cask font-ibm-plex;
 
 # GUI software
-brew cask install kitty;
-brew cask install spectacle;
-brew cask install slack;
-brew cask install firefox;
-brew cask install bitwarden;
-brew cask install spotify;
-brew cask install docker;
-brew cask install tunnelblick;
+brew install --cask kitty;
+brew install --cask spectacle;
+brew install --cask slack;
+brew install --cask firefox;
+brew install --cask spotify;
+brew install --cask docker;
+brew install --cask tunnelblick;
+brew install --cask postico;
 
 # CLI tools
 brew install neovim;

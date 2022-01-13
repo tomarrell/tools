@@ -1,0 +1,41 @@
+# This is Git's per-user configuration file.
+[user]
+	name = Tom Arrell
+	email = tom.arrell@gmail.com
+	signingKey = A5E3D9D260A58474
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[pull]
+	rebase = false
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[commit]
+	gpgsign = true
+[alias]
+	logs = log --show-signature
+[gpg]
+	program = gpg
+
+[core]
+	pager = delta --dark
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
+	side-by-side = true
+[merge]
+	conflictstyle = diff3
+
+# Diffing and merging
+# [diff]
+# 	tool = nvimdiff
+# 	colorMoved = default
+# [difftool]
+# 	prompt = true
+# [merge]
+#	  tool = nvimdiff
+# [difftool "nvimdiff"]
+#	  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""

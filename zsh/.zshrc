@@ -7,6 +7,8 @@ export PATH=$HOME/go/bin:$PATH
 export PATH=$PATH:/usr/local/opt/rabbitmq/sbin
 export PATH=$PATH:/Users/tom/.linkerd2/bin
 
+alias tmux="TERM=screen-256color-bce tmux"
+
 # Fix for Git signing with GPG
 export GPG_TTY=$(tty)
 
@@ -80,7 +82,6 @@ alias python="python3"
 alias tf="terraform"
 alias tg="terragrunt"
 
-alias git="hub"
 alias gpr="git pull-request --browse"
 
 alias tomssh="ssh -i ~/.ssh/tomssh.pem ec2-user@100.127.229.45"
@@ -120,10 +121,9 @@ realpath() {
     [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
 }
 
-loadnvm() {
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-}
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Kube completions
 source <(kubectl completion zsh)
@@ -131,10 +131,5 @@ source <(kubectl completion zsh)
 rm -f "$HOME/.zcompdump"
 compinit
 
-source /Users/tom/Library/Preferences/org.dystroy.broot/launcher/bash/br
-
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/vault vault
-
-export GOPATH="$HOME/go"; export GOROOT="$HOME/.go"; export PATH="$GOPATH/bin:$PATH"; # g-install: do NOT edit, see https://github.com/stefanmaric/g
-alias gvm="$GOPATH/bin/g"; # g-install: do NOT edit, see https://github.com/stefanmaric/g
