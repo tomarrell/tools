@@ -9,7 +9,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'vim-airline/vim-airline-themes'
 
   " Treesitter
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'} " We recommend updating the parsers on update
 
   " Firewatch
   Plug 'rakr/vim-two-firewatch'
@@ -26,6 +26,9 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " File explorer sidebar
   Plug 'scrooloose/nerdtree'
+
+  " D2 diagrams
+  Plug 'terrastruct/d2-vim'
 
   " 'Distraction free editing'
   Plug 'junegunn/goyo.vim'
@@ -66,7 +69,7 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'elzr/vim-json'
   Plug 'moll/vim-node'
   " Javascript smart gf
-  Plug 'tomarrell/vim-npr'
+  " Plug 'tomarrell/vim-npr'
 
   " Go
   Plug 'fatih/vim-go'
@@ -243,7 +246,8 @@ nnoremap <SPACE>gl :AsyncRun git pull<CR>
 
 " Go mappings
 nnoremap <SPACE>gt :GoTests<CR>
-nnoremap <SPACE>fe ddkoreturn fmt.Errorf(": %v", err)<ESC>T:hi
+nnoremap <SPACE>ff ddkoreturn fmt.Errorf(": %v", err)<ESC>T:hi
+nnoremap <SPACE>fe $bc$fmt.Errorf(": %v", err)<ESC>T:hi
 
 " Jump back to previous file
 nnoremap <C-p> <C-^>
@@ -271,7 +275,6 @@ nnoremap <SPACE>sp :Ag<CR>
 
 " Format JSON quickbind, first is for line, second for file
 nnoremap <SPACE>fj :.!python -m json.tool<CR>
-nnoremap <SPACE>ff :%!python -m json.tool<CR>
 
 " Rust Bindings
 nnoremap <SPACE>rf :%!rustfmt<CR>
@@ -288,6 +291,9 @@ nnoremap <SPACE>ww :set wrap!<CR>
 
 " Remove highlights
 nnoremap <SPACE>rh :nohl<CR>
+
+" Restart Coc
+nnoremap <SPACE>cs :CocRestart<CR>
 
 " Restart Coc
 nnoremap <SPACE>cs :CocRestart<CR>
@@ -311,6 +317,15 @@ imap <C-d> <C-R>=strftime("%FT%T%z")<CR>
 
 " Close preview window after completion
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
+autocmd BufWritePre *.go :OR
 
 " Delete whitespace
 func! DeleteTrailingWS()
@@ -357,6 +372,9 @@ nmap <silent> gi <Plug>(coc-implementation)
 
 " gr - find references
 nmap <silent> gr <Plug>(coc-references)
+
+" Apply LSP fix for current document
+nnoremap <SPACE>cf :call CocAction('doQuickfix')<CR>
 
 " gh - get hint on whatever's under the cursor
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -409,8 +427,7 @@ autocmd BufRead,BufNewFile *.cue setlocal filetype=cue
 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = "maintained",
+  ensure_installed = { "go" },
 
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
